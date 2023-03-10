@@ -25,7 +25,7 @@ function install_miniconda3() {
     # delete the previous installer
     rm "/tmp/$miniconda_installer"
   fi
-  wget $miniocnda_repo/$miniconda_installer -O "/tmp/miniconda_installer"
+  wget $miniocnda_repo/$miniconda_installer -O "/tmp/$miniconda_installer"
 
   # install miniconda
   if ! bash "/tmp/$miniconda_installer" -b -p "$HOME/miniconda3"; then
