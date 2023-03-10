@@ -5,20 +5,6 @@ function is_global_internet_available() {
     return "$(wget -q --spider https://www.google.com)"
 }
 
-# function to check whether wget is available
-# if wget is not available, install it
-function check_is_wget_available() {
-    if [ "$(which wget)" ]; then
-        return 0
-    else
-        log warning "wget is not available, install it now"
-        if ! sudo apt install wget; then
-            log error "wget installation failed"
-            exit 1
-        fi
-    fi
-}
-
 # Define the confirm function
 function confirm() {
     while true; do

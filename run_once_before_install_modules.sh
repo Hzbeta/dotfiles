@@ -57,7 +57,7 @@ fi
 sudo apt update
 sudo apt upgrade -y
 # install wget
-check_is_wget_available
+sudo apt install -y wget curl git
 
 # install modules
 for module in "${need_install_modules[@]}"; do
