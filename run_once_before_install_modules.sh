@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # load utils
-if ! cd "$(chezmoi source-path)"; then
-    echo -e "[\033[31mError\033[0m] failed to cd to chezmoi source path: $(chezmoi source-path)"
+if ! cd "$(dirname "$0")"; then
+    echo -e "[\033[31mError\033[0m] failed to cd to $(dirname "$0")"
     exit 1
 fi 
 
@@ -10,7 +10,8 @@ source ./bootstrap/utils/base.sh
 
 # installation list
 # the config.sh contains the modules list
-source ./bootstrap/utils/config.sh
+# the first argument is the path to the chezmoi source-path
+source ./bootstrap/utils/config.sh "$(pwd)"
 
 is_need_confirm=true
 while $is_need_confirm; do

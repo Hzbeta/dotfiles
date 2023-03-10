@@ -11,7 +11,7 @@ fi
 
 # init config
 # shellcheck source=/dev/null
-source "$(chezmoi source-path)/bootstrap/utils/config.sh"
+source "$(chezmoi source-path)/bootstrap/utils/config.sh" "$(chezmoi source-path)"
 for module in "${cm_user_modules[@]}"; do
     # shellcheck source=/dev/null
     source "$(chezmoi source-path)/bootstrap/installer/${module}.sh"
