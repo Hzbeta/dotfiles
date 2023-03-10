@@ -13,11 +13,11 @@ function install_miniconda3() {
 
   # set miniconda repo
   miniocnda_repo="https://repo.anaconda.com/miniconda"
-  is_global=$(is_global_internet_available)
-  if [ $is_global -ne 0 ]; then
+
+  if ! is_global_internet_available; then
     miniocnda_repo="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda"
   fi
-
+  
   # download miniconda installer
 
   miniconda_installer="Miniconda3-latest-Linux-x86_64.sh" # TODO support other platforms
@@ -34,7 +34,7 @@ function install_miniconda3() {
   fi
 
   # if global internet is available, use mirror
-  if [ $is_global -ne 0 ]; then
+  if ! is_global_internet_available; then
 
     # use conda mirror
     channels='

@@ -2,7 +2,11 @@
 
 # function to check whether can connect to the global internet
 function is_global_internet_available() {
-    return "$(wget -q --spider https://www.google.com)"
+    if wget -q --spider https://www.google.com; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 # Define the confirm function
