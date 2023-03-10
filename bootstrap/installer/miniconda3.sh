@@ -28,9 +28,7 @@ function install_miniconda3() {
   wget $miniocnda_repo/$miniconda_installer -O "/tmp/miniconda_installer"
 
   # install miniconda
-  bash $miniconda_installer -b -p "$HOME/miniconda3"
-
-  if ! bash $miniconda_installer -b -p "$HOME/miniconda3"; then
+  if ! bash "/tmp/$miniconda_installer" -b -p "$HOME/miniconda3"; then
     log error "failed to install miniconda"
     exit 1
   fi
