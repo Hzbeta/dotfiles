@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# function to check whether can connect to the global internet
+function is_global_internet_available() {
+    return "$(wget -q --spider https://www.google.com)"
+}
+
+# function to check whether wget is available
+# if wget is not available, install it
+function check_is_wget_available() {
+    if [ "$(which wget)" ]; then
+        return 0
+    else
+        log warning "wget is not available, install it now"
+        if ! sudo apt install wget; then
+            log error "wget installation failed"
+            exit 1
+        fi
+    fi
+}
+
+# Define the confirm function
+function confirm() {
+    while true; do
+        read -rp "$1 [Y/n] " response
+        response=${response:-Y}
+        case "$response" in
+        [yY])
+            return 0
+            ;;
+        [nN])
+            return 1
+            ;;
+        *)
+            log error "please enter y or n."
+            ;;
+        esac
+    done
+}
+
+# Define the echo function with status and color
+# the status can be: info, warning, error
+# the color will set to: green, yellow, red
+function log() {
+    local status=$1
+    local message=$2
+    local status
+    case "$status" in
+    info)
+        status="\033[32m[Info]\033[0m"
+        ;;
+    warning)
+        status="\033[33m[Warning]\033[0m"
+        ;;
+    error)
+        status="\033[31m[Error]\033[0m"
+        ;;
+    *)
+        status="\033[32m[Info]\033[0m"
+        ;;
+    esac
+    echo -e "$status $message"
+}
