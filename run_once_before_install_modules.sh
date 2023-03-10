@@ -1,8 +1,10 @@
 #!/bin/bash
 
+[[ -e ~/.profile ]] && source ~/.profile
+
 # load utils
-if ! cd "$(dirname "$0")"; then
-    echo -e "[\033[31mError\033[0m] failed to cd to $(dirname "$0")"
+if ! cd "$(chezmoi source-path)"; then
+    echo -e "[\033[31mError\033[0m] failed to cd to $(chezmoi source-path)"
     exit 1
 fi 
 
