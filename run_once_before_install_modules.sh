@@ -25,7 +25,6 @@ while $is_need_confirm; do
         source "./bootstrap/installer/${module}.sh"
         if ! "check_is_${module}_installed"; then
             if confirm "$(log info "install ${module}?")"; then
-                log info "${module} will be installed..."
                 need_install_modules+=("${module}")
             fi
         fi
@@ -36,9 +35,9 @@ while $is_need_confirm; do
     if [ -z "${need_install_modules[*]}" ]; then
         is_need_confirm=false
     else
-        log info "the following will be installed \u2193"
+        log info "the following will be installed:"
         for module in "${need_install_modules[@]}"; do
-            log info "\u2713 $module"
+            log info "$module"
         done
         if confirm "$(log info 'continue?')"; then
             is_need_confirm=false
