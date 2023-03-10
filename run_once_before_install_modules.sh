@@ -4,7 +4,7 @@
 
 # load utils
 if ! cd "$(chezmoi source-path)"; then
-    echo -e "[\033[31mError\033[0m] failed to cd to $(chezmoi source-path)"
+    echo -e "\033[31m[Error]\033[0m failed to cd to $(chezmoi source-path)"
     exit 1
 fi 
 
