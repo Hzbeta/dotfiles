@@ -71,6 +71,6 @@ trusted-host = https://pypi.tuna.tsinghua.edu.cn
     log info "Added pip mirror to ~/.pip/pip.conf file."
   fi
 
-  rm $miniconda_installer
+  rm "/tmp/$miniconda_installer"
 
 }
