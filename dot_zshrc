@@ -43,8 +43,11 @@ if check_is_pnpm_installed; then
 fi
 
 # zi init
+if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
+  sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
+fi
 # shellcheck source=/dev/null
-source <(curl -sL init.zshell.dev)
+source "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh"
 zzinit
 
 # >>> zi plugins >>>
@@ -80,7 +83,7 @@ zi load b4b4r07/enhancd
 # auto change node version base on .nvmrc file
 # https://github.com/lukechilds/zsh-nvm
 export NVM_AUTO_USE=true
-zi ice wait lucid
+zi ice wait lucid has'pnpm'
 zi load lukechilds/zsh-nvm
 
 # completions
