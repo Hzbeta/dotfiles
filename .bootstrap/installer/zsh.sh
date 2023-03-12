@@ -16,6 +16,11 @@ function install_zsh() {
         return 1
     fi
 
+    if ! sudo apt install -y fzf; then
+        log error "fzf installation failed"
+        return 1
+    fi
+
     # change default shell to zsh
     if ! chsh -s "$(command -v zsh &>/dev/null)"; then
         log error "change default shell to zsh failed"
