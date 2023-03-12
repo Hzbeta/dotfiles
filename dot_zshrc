@@ -1,7 +1,7 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then 
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   # shellcheck source=/dev/null
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -10,7 +10,7 @@ fi
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
 # get the chezmoi source path
-if ! chezmoi source-path &> /dev/null; then
+if ! chezmoi source-path &>/dev/null; then
     echo -e "\033[31m[Error]\033[0m failed to get chezmoi source path"
     exit 1
 fi
@@ -30,19 +30,19 @@ unset chezmoi_source_path
 
 # >>> conda initialize >>>
 if check_is_miniconda3_installed; then
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2>/dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-        # shellcheck source=/dev/null
-        . "$HOME/miniconda3/etc/profile.d/conda.sh"
+    # !! Contents within this block are managed by 'conda init' !!
+    __conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2>/dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
     else
-        export PATH="$HOME/miniconda3/bin:$PATH"
+        if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+            # shellcheck source=/dev/null
+            . "$HOME/miniconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="$HOME/miniconda3/bin:$PATH"
+        fi
     fi
-fi
-unset __conda_setup
+    unset __conda_setup
 fi
 # <<< conda initialize <<<
 
@@ -52,9 +52,15 @@ if check_is_pnpm_installed; then
     export PATH="$PNPM_HOME:$PATH"
 fi
 
+# unset unsed functions
+for module in "${cm_user_modules[@]}"; do
+    unset -f "check_is_${module}_installed"
+done
+unset cm_user_modules
+
 # zi init
 if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
-  sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
+    sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
 fi
 # shellcheck source=/dev/null
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh"
@@ -65,15 +71,15 @@ zzinit
 
 # meta
 zi light-mode for \
-  z-shell/z-a-meta-plugins \
-  @romkatv
+    z-shell/z-a-meta-plugins \
+    @romkatv
 
 # plugins
 zi wait lucid for \
     atinit'ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
-        z-shell/F-Sy-H \
+    z-shell/F-Sy-H \
     atload'!_zsh_autosuggest_start' \
-        zsh-users/zsh-autosuggestions \
+    zsh-users/zsh-autosuggestions \
     zsh-users/zsh-history-substring-search \
     zpm-zsh/ls \
     OMZP::docker \
@@ -82,9 +88,8 @@ zi wait lucid for \
     OMZP::command-not-found \
     OMZL::history.zsh \
     atinit'zicompinit' has'fzf' \
-        Aloxaf/fzf-tab \
-    # OMZL::key-bindings.zsh \
-
+    Aloxaf/fzf-tab
+# OMZL::key-bindings.zsh \
 
 # should install fzf
 # https://github.com/junegunn/fzf
@@ -101,18 +106,13 @@ zi load lukechilds/zsh-nvm
 zi wait lucid blockf as'completion' for \
     zsh-users/zsh-completions \
     mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
-        https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
+    https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
     has'conda' \
-        https://github.com/conda-incubator/conda-zsh-completion/blob/master/_conda
+    https://github.com/conda-incubator/conda-zsh-completion/blob/master/_conda
 
 zi ice wait lucid atload"zpcdreplay" atclone"./zplug.zsh" has'pnpm'
 zi load g-plane/pnpm-shell-completion
 # <<<<<<<<<<<<<<<<<<<<<<
 # <<< zi plugins end <<<
 
-
-# unset unsed functions
-for module in "${cm_user_modules[@]}"; do
-    unset -f "check_is_${module}_installed"
-done
-unset cm_user_modules
+alias cm='chezmoi'
