@@ -2,7 +2,7 @@
 
 # function to check whether can connect to the global internet
 function is_global_internet_available() {
-    if wget -q --spider https://www.google.com; then
+    if wget -T 3 -t 1 --spider https://www.google.com; then
         return 0
     else
         return 1
