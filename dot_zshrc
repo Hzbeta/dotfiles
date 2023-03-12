@@ -77,9 +77,9 @@ zi light-mode for \
 # plugins
 zi wait lucid for \
     atinit'ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
-    z-shell/F-Sy-H \
+        z-shell/F-Sy-H \
     atload'!_zsh_autosuggest_start' \
-    zsh-users/zsh-autosuggestions \
+        zsh-users/zsh-autosuggestions \
     zsh-users/zsh-history-substring-search \
     zpm-zsh/ls \
     OMZP::docker \
@@ -88,8 +88,8 @@ zi wait lucid for \
     OMZP::command-not-found \
     OMZL::history.zsh \
     atinit'zicompinit' has'fzf' \
-    Aloxaf/fzf-tab
-# OMZL::key-bindings.zsh \
+        Aloxaf/fzf-tab \
+    OMZL::key-bindings.zsh \
 
 # should install fzf
 # https://github.com/junegunn/fzf
@@ -106,9 +106,9 @@ zi load lukechilds/zsh-nvm
 zi wait lucid blockf as'completion' for \
     zsh-users/zsh-completions \
     mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
-    https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
+        https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
     has'conda' \
-    https://github.com/conda-incubator/conda-zsh-completion/blob/master/_conda
+        https://github.com/conda-incubator/conda-zsh-completion/blob/master/_conda
 
 zi ice wait lucid atload"zpcdreplay" atclone"./zplug.zsh" has'pnpm'
 zi load g-plane/pnpm-shell-completion
