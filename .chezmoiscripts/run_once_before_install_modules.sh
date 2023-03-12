@@ -1,6 +1,13 @@
 #!/bin/bash
 
+ # shellcheck source=/dev/null
 [[ -e ~/.profile ]] && source ~/.profile
+
+# check if chezmoi is installed
+if ! command -v chezmoi &> /dev/null; then
+    echo -e "\033[31m[Error]\033[0m chezmoi is not installed"
+    exit 1
+fi
 
 # load utils
 if ! cd "$(chezmoi source-path)"; then
@@ -8,21 +15,22 @@ if ! cd "$(chezmoi source-path)"; then
     exit 1
 fi 
 
-source ./bootstrap/utils/base.sh
+source ./.bootstrap/utils/base.sh
 
 # installation list
 # the config.sh contains the modules list
 # the first argument is the path to the chezmoi source-path
-source ./bootstrap/utils/config.sh "$(pwd)"
+source ./.bootstrap/utils/config.sh "$(chezmoi source-path)"
 
 is_need_confirm=true
 while $is_need_confirm; do
 
     need_install_modules=()
+    declare cm_user_modules
     # ask for each module installation
     for module in "${cm_user_modules[@]}"; do
         # shellcheck source=/dev/null
-        source "./bootstrap/installer/${module}.sh"
+        source "./.bootstrap/installer/${module}.sh"
         if ! "check_is_${module}_installed"; then
             if confirm "$(log info "install ${module}?")"; then
                 need_install_modules+=("${module}")
@@ -51,6 +59,9 @@ done
 if [ -z "${need_install_modules[*]}" ]; then
     exit 0
 fi
+
+# get sudo permission
+sudo -v
 
 # base installation
 sudo apt update

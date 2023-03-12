@@ -10,11 +10,13 @@ fi
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
 # init config
+declare cm_user_modules
+# get modules list to cm_user_modules
 # shellcheck source=/dev/null
-source "$(chezmoi source-path)/bootstrap/utils/config.sh" "$(chezmoi source-path)"
+source "$(chezmoi source-path)/.bootstrap/utils/config.sh" "$(chezmoi source-path)"
 for module in "${cm_user_modules[@]}"; do
     # shellcheck source=/dev/null
-    source "$(chezmoi source-path)/bootstrap/installer/${module}.sh"
+    source "$(chezmoi source-path)/.bootstrap/installer/${module}.sh"
     unset -f "install_${module}"
 done
 
@@ -71,13 +73,14 @@ zi wait lucid for \
     OMZP::sudo \
     OMZP::command-not-found \
     OMZL::history.zsh \
-    OMZL::key-bindings.zsh \
     atinit'zicompinit' has'fzf' \
-        Aloxaf/fzf-tab
+        Aloxaf/fzf-tab \
+    # OMZL::key-bindings.zsh \
 
 
-# should install peco with `apt install peco`
-zi ice wait lucid use'init.sh' has'peco'
+# should install fzf
+# https://github.com/junegunn/fzf
+zi ice wait lucid use'init.sh' has'fzf'
 zi load b4b4r07/enhancd
 
 # auto change node version base on .nvmrc file
@@ -104,5 +107,4 @@ zi load g-plane/pnpm-shell-completion
 for module in "${cm_user_modules[@]}"; do
     unset -f "check_is_${module}_installed"
 done
-
 unset cm_user_modules

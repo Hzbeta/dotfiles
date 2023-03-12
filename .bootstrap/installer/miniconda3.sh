@@ -11,16 +11,20 @@ function check_is_miniconda3_installed() {
 
 function install_miniconda3() {
 
-  # set miniconda repo
-  miniocnda_repo="https://repo.anaconda.com/miniconda"
+  # get global internet info
+  is_global_internet_available
+  local is_global=$?
 
-  if ! is_global_internet_available; then
+  # set miniconda repo
+  local miniocnda_repo="https://repo.anaconda.com/miniconda"
+
+  if [ $is_global -ne 0 ]; then
     miniocnda_repo="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda"
   fi
   
   # download miniconda installer
 
-  miniconda_installer="Miniconda3-latest-Linux-x86_64.sh" # TODO support other platforms
+  local miniconda_installer="Miniconda3-latest-Linux-x86_64.sh" # TODO support other platforms
   if [ -f "/tmp/$miniconda_installer" ]; then
     # delete the previous installer
     rm "/tmp/$miniconda_installer"
@@ -34,10 +38,10 @@ function install_miniconda3() {
   fi
 
   # if global internet is available, use mirror
-  if ! is_global_internet_available; then
+  if [ $is_global -ne 0 ]; then
 
     # use conda mirror
-    channels='
+    local channels='
 channels:
   - defaults
 show_channel_urls: true
@@ -61,7 +65,7 @@ custom_channels:
     if [ ! -d ~/.pip ]; then
       mkdir -p ~/.pip
     fi
-    pip_conf='
+    local pip_conf='
 [global]
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 [install]
