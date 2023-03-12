@@ -2,7 +2,7 @@
 
 # check if zsh is installed
 function check_is_zsh_installed() {
-    if [ -z "$(command -v zsh &>/dev/null)" ]; then
+    if ! command -v zsh &>/dev/null; then
         return 1
     fi
 
@@ -22,7 +22,7 @@ function install_zsh() {
     fi
 
     # change default shell to zsh
-    if ! chsh -s "$(command -v zsh &>/dev/null)"; then
+    if ! chsh -s "$(command -v zsh)"; then
         log error "change default shell to zsh failed"
         return 1
     fi
