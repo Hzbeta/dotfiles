@@ -9,16 +9,24 @@ fi
 # init .profile
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
+# get the chezmoi source path
+if ! chezmoi source-path &> /dev/null; then
+    echo -e "\033[31m[Error]\033[0m failed to get chezmoi source path"
+    exit 1
+fi
+chezmoi_source_path="$(chezmoi source-path)"
+
 # init config
 declare cm_user_modules
 # get modules list to cm_user_modules
 # shellcheck source=/dev/null
-source "$(chezmoi source-path)/.bootstrap/utils/config.sh" "$(chezmoi source-path)"
+source "$chezmoi_source_path/.bootstrap/utils/config.sh" "$chezmoi_source_path"
 for module in "${cm_user_modules[@]}"; do
     # shellcheck source=/dev/null
-    source "$(chezmoi source-path)/.bootstrap/installer/${module}.sh"
+    source "$chezmoi_source_path/.bootstrap/installer/${module}.sh"
     unset -f "install_${module}"
 done
+unset chezmoi_source_path
 
 # >>> conda initialize >>>
 if check_is_miniconda3_installed; then
