@@ -11,5 +11,9 @@ function check_is_pnpm_installed() {
 
 # install pnpm
 function install_pnpm() {
+    if ! cd ~; then
+        log error "failed to cd to $HOME"
+        exit 1
+    fi
     wget -qO- https://get.pnpm.io/install.sh | sh -
 }
