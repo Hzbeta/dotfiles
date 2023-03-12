@@ -9,18 +9,22 @@ if ! command -v chezmoi &> /dev/null; then
     exit 1
 fi
 
-# load utils
-if ! cd "$(chezmoi source-path)"; then
-    echo -e "\033[31m[Error]\033[0m failed to cd to $(chezmoi source-path)"
+# get the chezmoi source path
+if ! chezmoi source-path &> /dev/null; then
+    echo -e "\033[31m[Error]\033[0m failed to get chezmoi source path"
     exit 1
-fi 
+fi
+chezmoi_source_path="$(chezmoi source-path)"
 
-source ./.bootstrap/utils/base.sh
+# load utils
+# shellcheck source=/dev/null
+source "$chezmoi_source_path/.bootstrap/utils/base.sh"
 
 # installation list
 # the config.sh contains the modules list
 # the first argument is the path to the chezmoi source-path
-source ./.bootstrap/utils/config.sh "$(chezmoi source-path)"
+# shellcheck source=/dev/null
+source "$chezmoi_source_path/.bootstrap/utils/config.sh" "$chezmoi_source_path"
 
 is_need_confirm=true
 while $is_need_confirm; do
@@ -30,7 +34,7 @@ while $is_need_confirm; do
     # ask for each module installation
     for module in "${cm_user_modules[@]}"; do
         # shellcheck source=/dev/null
-        source "./.bootstrap/installer/${module}.sh"
+        source "$chezmoi_source_path/.bootstrap/installer/${module}.sh"
         if ! "check_is_${module}_installed"; then
             if confirm "$(log info "install ${module}?")"; then
                 need_install_modules+=("${module}")
