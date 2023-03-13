@@ -58,6 +58,13 @@ for module in "${cm_user_modules[@]}"; do
 done
 unset cm_user_modules
 
+# https://github.com/microsoft/vscode/issues/153400
+# add a vscode degraded shell integration for p10k
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+# shellcheck disable=SC2034
+  ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
+fi
+
 # zi init
 if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
     sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
