@@ -74,6 +74,9 @@ zi light-mode for \
     z-shell/z-a-meta-plugins \
     @romkatv
 
+# key bindings (should load immediately or the p10k feature `transient_prompt` will not work )
+zi snippet OMZL::key-bindings.zsh
+
 # plugins
 zi wait lucid for \
     atinit'ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
@@ -89,7 +92,6 @@ zi wait lucid for \
     OMZL::history.zsh \
     atinit'zicompinit' has'fzf' \
         Aloxaf/fzf-tab \
-    OMZL::key-bindings.zsh \
 
 # should install fzf
 # https://github.com/junegunn/fzf
@@ -116,3 +118,5 @@ zi load g-plane/pnpm-shell-completion
 # <<< zi plugins end <<<
 
 alias cm='chezmoi'
+
+zi snippet OMZL::key-bindings.zsh
