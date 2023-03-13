@@ -118,5 +118,3 @@ zi load g-plane/pnpm-shell-completion
 # <<< zi plugins end <<<
 
 alias cm='chezmoi'
-
-zi snippet OMZL::key-bindings.zsh
