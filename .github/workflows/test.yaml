@@ -1,0 +1,37 @@
+name: test
+on: [push]
+
+jobs:
+  bootstrap-installion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Install chezmoi
+        run: |
+          cd ~ 
+          sh -c "$(curl -fsLS get.chezmoi.io)"
+
+      - name: Copy the repo to chezmoi source path
+        run: |
+          source ~/.profile
+          mkdir -p "$(dirname "$(chezmoi source-path)")"
+          cp -r ${{ github.workspace }} $(chezmoi source-path)
+      
+      - name: Set test env
+        run : |
+          mkdir -p ~/.config/chezmoi
+          echo "[scriptEnv]" > ~/.config/chezmoi/chezmoi.toml
+          echo "    CM_INSTALL_MODULE = \"all\"" >> ~/.config/chezmoi/chezmoi.toml
+          
+      - name: Run chezmoi apply
+        run: |
+          source ~/.profile
+          chezmoi apply
+
+      - name: Check bootstrap installion
+        run: |
+          source ~/.profile
+          export CM_INSTALL_MODULE='test'
+          bash "$(chezmoi source-path)/.chezmoiscripts/run_once_after_install_modules.sh" test
