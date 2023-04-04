@@ -1,0 +1,80 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  # shellcheck source=/dev/null
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# source .profile
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+
+# https://github.com/microsoft/vscode/issues/153400
+# add a vscode degraded shell integration for p10k
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+# shellcheck disable=SC2034
+  ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
+fi
+
+# zi init
+if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
+    sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
+fi
+# shellcheck source=/dev/null
+source "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh"
+zzinit
+
+# >>> zi plugins >>>
+# >>>>>>>>>>>>>>>>>>
+
+# meta
+zi light-mode for \
+    z-shell/z-a-meta-plugins \
+    @romkatv  # for p10k
+
+# key bindings (should load immediately or the p10k feature `transient_prompt` will not work )
+zi snippet OMZL::key-bindings.zsh
+
+# plugins
+zi wait lucid for \
+    atinit'ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
+        z-shell/F-Sy-H \
+    atload'!_zsh_autosuggest_start' \
+        zsh-users/zsh-autosuggestions \
+    zsh-users/zsh-history-substring-search \
+    zpm-zsh/ls \
+    OMZP::docker \
+    OMZP::extract \
+    OMZP::sudo \
+    OMZP::command-not-found \
+    OMZL::history.zsh \
+    atinit'zicompinit' has'fzf' \
+        Aloxaf/fzf-tab \
+
+# should install fzf
+# https://github.com/junegunn/fzf
+zi ice wait lucid use'init.sh' has'fzf'
+zi load b4b4r07/enhancd
+
+# auto change node version base on .nvmrc file
+# https://github.com/lukechilds/zsh-nvm
+export NVM_AUTO_USE=true
+zi ice wait lucid has'pnpm'
+zi load lukechilds/zsh-nvm
+
+# completions
+zi wait lucid blockf as'completion' for \
+    zsh-users/zsh-completions \
+    mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
+        https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
+    has'conda' \
+        https://github.com/conda-incubator/conda-zsh-completion/blob/master/_conda
+
+zi ice wait lucid atload"zpcdreplay" atclone"./zplug.zsh" has'pnpm'
+zi load g-plane/pnpm-shell-completion
+# <<<<<<<<<<<<<<<<<<<<<<
+# <<< zi plugins end <<<
+
+# costom alias
+alias cm='chezmoi'
+alias c='clear'
