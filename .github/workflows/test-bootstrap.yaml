@@ -1,8 +1,12 @@
-name: test
-on: [push]
+name: test-bootstrap
+on:
+  push:
+    paths:
+      - '.bootstrap/**'
+      - '.chezmoiscripts/run_once_after_00_bootstrap.sh'
 
 jobs:
-  bootstrap-installion:
+  test-bootstrap:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -34,4 +38,4 @@ jobs:
         run: |
           source ~/.profile
           export CM_INSTALL_MODULE='test'
-          bash "$(chezmoi source-path)/.chezmoiscripts/run_once_after_install_modules.sh" test
+          bash "$(chezmoi source-path)/.chezmoiscripts/run_once_after_00_bootstrap.sh" test
