@@ -58,7 +58,6 @@ zi wait lucid for \
 # https://github.com/junegunn/fzf
 # with fzf-history-search, you can use ctrl+r to search history
 zi wait lucid has'fzf' for \
-    src'init.sh' \
         b4b4r07/enhancd \
     atinit'zicompinit' \
         Aloxaf/fzf-tab \
