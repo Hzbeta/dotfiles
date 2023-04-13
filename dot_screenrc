@@ -1,0 +1,9 @@
+# disables screen clearing when switching between windows.
+termcapinfo xterm* ti@:te@
+
+# sets the default scrollback buffer size to 10,000 lines.
+defscrollback 10000
+
+# binds mouse wheel scrolling events to scroll back and forth in the buffer.
+bindkey -t mswheel_up eval "scrollback 1" "scrollback 1"
+bindkey -t mswheel_down eval "scrollback 1" "scrollback -1"
