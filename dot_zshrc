@@ -50,13 +50,14 @@ zi wait lucid for \
     OMZP::sudo \
     OMZP::command-not-found \
     OMZL::history.zsh \
-    atinit'zicompinit' has'fzf' \
-        Aloxaf/fzf-tab \
 
-# should install fzf
+# need to install fzf
 # https://github.com/junegunn/fzf
-zi ice wait lucid use'init.sh' has'fzf'
-zi load b4b4r07/enhancd
+zi wait lucid has'fzf' for \
+    src'init.sh' \
+        b4b4r07/enhancd \
+    atinit'zicompinit' \
+        Aloxaf/fzf-tab \
 
 # auto change node version base on .nvmrc file
 # https://github.com/lukechilds/zsh-nvm
