@@ -4,14 +4,15 @@
 if command -v tmux &> /dev/null && [ -z $TMUX ] && [[ ! $TERM =~ screen ]]; then
   if [[ ! "$TERM_PROGRAM" == "vscode" ]]; then
     tmux_session_name=" main"
+    exec tmux new-session -A -s "$tmux_session_name"
   # else
   #   tmux_session_name="󰨞 $(pwd | awk '{gsub(/\./, "_"); print}')"
   #   if tmux has-session -t "$tmux_session_name" 2>/dev/null; then
   #     # create a new window
   #     tmux new-window -t "$tmux_session_name"
   #   fi
+  #   exec tmux new-session -A -s "$tmux_session_name"
   fi
-  exec tmux new-session -A -s "$tmux_session_name"
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
