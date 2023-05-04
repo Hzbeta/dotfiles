@@ -1,4 +1,19 @@
 #!/bin/zsh
+
+# lanuch tmux if it is not running
+if command -v tmux &> /dev/null && [ -z $TMUX ] && [[ ! $TERM =~ screen ]]; then
+  if [[ ! "$TERM_PROGRAM" == "vscode" ]]; then
+    tmux_session_name=" main"
+  # else
+  #   tmux_session_name="󰨞 $(pwd | awk '{gsub(/\./, "_"); print}')"
+  #   if tmux has-session -t "$tmux_session_name" 2>/dev/null; then
+  #     # create a new window
+  #     tmux new-window -t "$tmux_session_name"
+  #   fi
+  fi
+  exec tmux new-session -A -s "$tmux_session_name"
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -7,17 +22,17 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# source .profile
+# Source .profile to add some program to PATH
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
 # https://github.com/microsoft/vscode/issues/153400
-# add a vscode degraded shell integration for p10k
+# Add a vscode degraded shell integration for p10k
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 # shellcheck disable=SC2034
   ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
 fi
 
-# zi init
+# Zi init
 if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
     sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
 fi
@@ -25,22 +40,20 @@ fi
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh"
 zzinit
 
-# >>> zi plugins >>>
-# >>>>>>>>>>>>>>>>>>
+# >>>>> zi plugins >>>>>
+# >>>>>>>>>>>>>>>>>>>>>>
 
-# meta, used for p10k to skip its setup on initialization
+# Meta, used for p10k to skip its setup on initialization
 zi light-mode for \
     z-shell/z-a-meta-plugins \
     @romkatv  # for p10k
 
-# plugins need to load immediately
-# if OMZL::key-bindings.zsh are lazy loaded,    the p10k feature `transient_prompt` will not work
+# Plugins need to load immediately
 # if OMZL::history.zsh are lazy loaded,         the history will show incomplete
 zi for \
-    OMZL::key-bindings.zsh \
     OMZL::history.zsh \
 
-# lazy load plugins
+# Some lazy load plugins
 zi wait lucid for \
     atinit'ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
         z-shell/F-Sy-H \
@@ -48,13 +61,15 @@ zi wait lucid for \
         zsh-users/zsh-autosuggestions \
     atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down;" \
         zsh-users/zsh-history-substring-search \
+    has'tmux' atload'omt install -s' \
+      Hzbeta/omt-manager \
     zpm-zsh/ls \
     OMZP::docker \
     OMZP::extract \
     OMZP::sudo \
     OMZP::command-not-found \
 
-# fzf related plugins
+# Some fzf related plugins
 # https://github.com/junegunn/fzf
 # with fzf-history-search, you can use ctrl+r to search history
 zi wait lucid has'fzf' for \
@@ -63,26 +78,80 @@ zi wait lucid has'fzf' for \
         Aloxaf/fzf-tab \
     joshskidmore/zsh-fzf-history-search \
 
-# auto change node version base on .nvmrc file
+# Auto change node version base on .nvmrc file
 # https://github.com/lukechilds/zsh-nvm
 export NVM_AUTO_USE=true
 zi ice wait lucid has'pnpm'
 zi load lukechilds/zsh-nvm
 
-# completions
+# Completions
 # Should run 'zicompinit; zicdreplay' after the last completion is loaded
+
+# As completion
 zi wait lucid blockf as'completion' for \
     mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
         https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
-    has'conda' \
-        https://github.com/conda-incubator/conda-zsh-completion/blob/master/_conda \
-    atclone"./zplug.zsh" has'pnpm' \
-        g-plane/pnpm-shell-completion \
     atload'zicompinit; zicdreplay' \
         zsh-users/zsh-completions \
-# <<<<<<<<<<<<<<<<<<<<<<
-# <<< zi plugins end <<<
 
-# costom alias
+zi wait lucid blockf for \
+    atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone" \
+        g-plane/pnpm-shell-completion
+# <<<<<<<<<<<<<<<<<<<<<<<<<<
+# <<<<< zi plugins end <<<<<
+
+# >>> key bindings start >>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>
+# Some key bindings from `Oh My Zsh`
+# Make sure that the terminal is in application mode when zle is active, since
+# only then values from $terminfo are valid
+if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
+  function zle-line-init() {
+    echoti smkx
+  }
+  function zle-line-finish() {
+    echoti rmkx
+  }
+  zle -N zle-line-init
+  zle -N zle-line-finish
+fi
+
+# Use emacs key bindings
+bindkey -e
+
+# Start typing + [Up-Arrow] - fuzzy find history forward
+if [[ -n "${terminfo[kcuu1]}" ]]; then
+  autoload -U up-line-or-beginning-search
+  zle -N up-line-or-beginning-search
+  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+fi
+# Start typing + [Down-Arrow] - fuzzy find history backward
+if [[ -n "${terminfo[kcud1]}" ]]; then
+  autoload -U down-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+fi
+# [Home] - Go to beginning of line
+if [[ -n "${terminfo[khome]}" ]]; then
+  bindkey "${terminfo[khome]}" beginning-of-line
+fi
+# [End] - Go to end of line
+if [[ -n "${terminfo[kend]}" ]]; then
+  bindkey "${terminfo[kend]}"  end-of-line
+fi
+# [Ctrl-e] Edit the current command line in $EDITOR
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-e' edit-command-line
+
+# Some key bindings that don't need to autoload functions
+bindkey '^[[3;5~' kill-word                   # [Ctrl-Delete] - delete whole forward-word
+bindkey '^[[1;5C' forward-word                # [Ctrl-RightArrow] - move forward one word
+bindkey '^[[1;5D' backward-word               # [Ctrl-LeftArrow] - move backward one word
+bindkey ' ' magic-space                       # [Space] - don't do history expansion
+# <<<<<<<<<<<<<<<<<<<<<<<<
+# <<< key bindings end <<<
+
+# Costom alias
 alias cm='chezmoi'
 alias c='clear'
