@@ -156,3 +156,4 @@ bindkey ' ' magic-space                       # [Space] - don't do history expan
 # Costom alias
 alias cm='chezmoi'
 alias c='clear'
+alias aria2d='aria2c -s 5 -x 5 -k 1M -c' # aria2c download with 5 connections, 1M chunk size and continue download 
