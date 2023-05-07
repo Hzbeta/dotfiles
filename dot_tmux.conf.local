@@ -114,7 +114,7 @@ tmux_conf_theme_pane_border_style=thin
 tmux_conf_theme_pane_border="$colour_gray"
 tmux_conf_theme_pane_active_border="$colour_light_blue"
 %if #{>=:#{version},3.2}
-tmux_conf_theme_pane_active_border="#{?pane_in_mode,$colour_yellow,#{?synchronize-panes,$colour_red,$colour_light_blue}}"
+    tmux_conf_theme_pane_active_border="#{?pane_in_mode,$colour_yellow,#{?synchronize-panes,$colour_red,$colour_light_blue}}"
 %endif
 
 # pane indicator colours (when you hit <prefix> + q)
@@ -417,8 +417,10 @@ set -g @continuum-restore 'on'
 # Uses a fuzzy finder to search terminal scrollback buffer, and jump to selected position.
 # Start it in a tmux session by typing prefix + ?
 set -g @plugin 'roosta/tmux-fuzzback'
-set -g @fuzzback-popup 1
-set -g @fuzzback-popup-size '90%'
+%if #{>=:#{version},3.2}
+    set -g @fuzzback-popup 1
+    set -g @fuzzback-popup-size '90%'
+%endif
 
 # Start it in a tmux session by typing prefix + F
 set -g @plugin 'sainnhe/tmux-fzf'
