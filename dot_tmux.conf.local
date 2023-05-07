@@ -241,10 +241,10 @@ tmux_conf_theme_right_separator_sub="|"
 #     - #{username_ssh}
 # tmux_conf_theme_status_left="󱞸 |#{session_name_format '#S'} "
 tmux_conf_theme_status_left=" 󱞸| #S "
-tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized} |#{username}#{root} |on |#{hostname}#{hostname_ssh} |󱞴 "
+tmux_conf_theme_status_right=" #{prefix}#{pairing}#{synchronized}#{mouse} |#{username}#{root} |on |#{hostname}#{hostname_ssh} |󱞴 "
 
-# status left style #ffffff,#2b73af
-tmux_conf_theme_status_left_fg="$colour_white,#2b73af"
+# status left style
+tmux_conf_theme_status_left_fg="$colour_white,$colour_light_blue"
 tmux_conf_theme_status_left_bg="default,default"
 tmux_conf_theme_status_left_attr="bold,none"
 
@@ -363,11 +363,11 @@ bind C-a send-prefix
 # move status line to top
 # set -g status-position top
 
-# Sisable copy mode in mouse drag
+# disable copy mode in mouse drag
 # unbind -T copy-mode MouseDragEnd1Pane
 # unbind -T copy-mode-vi MouseDragEnd1Pane
 
-# Speed up status update intervals
+# speed up status update intervals
 set -g status-interval 1
 
 # -- tpm -----------------------------------------------------------------------
@@ -406,14 +406,12 @@ tmux_conf_uninstall_plugins_on_reload=true
 # to enable a plugin, use the 'set -g @plugin' syntax:
 # visit https://github.com/tmux-plugins for available plugins
 
-# shows window icons
-set -g @plugin 'joshmedeski/tmux-nerd-font-window-name'
-set -g @tmux-nerd-font-window-name-show-name true
+# show system stats in status bar
+# set -g @plugin 'tmux-plugins/tmux-cpu'
 
-#set -g @plugin 'tmux-plugins/tmux-copycat'
-#set -g @plugin 'tmux-plugins/tmux-cpu'
-#set -g @plugin 'tmux-plugins/tmux-resurrect'
-#set -g @plugin 'tmux-plugins/tmux-continuum'
+# resurrect tmux environment after system restart
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @continuum-restore 'on'
 
 # Uses a fuzzy finder to search terminal scrollback buffer, and jump to selected position.
@@ -448,15 +446,6 @@ set -g @plugin 'sainnhe/tmux-fzf'
 #
 # online() {
 #   ping -c 1 1.1.1.1 >/dev/null 2>&1 && printf '✔' || printf '✘'
-# }
-#
-# session_name_format() {
-#     session_name="$1"
-#     if printf "%s" "$session_name" | grep -q "^󰨞 "; then
-#         printf '%s' "$session_name" | perl -pe 's/^󰨞\s\/(?:[^\/]*\/+)*([^\/]+)$/󰨞 $1/'
-#     else
-#         printf '%s' "$session_name"
-#     fi
 # }
 #
 # session_name_format() {
