@@ -364,11 +364,11 @@ bind C-a send-prefix
 # set -g status-position top
 
 # Sisable copy mode in mouse drag
-unbind -T copy-mode MouseDragEnd1Pane
-unbind -T copy-mode-vi MouseDragEnd1Pane
+# unbind -T copy-mode MouseDragEnd1Pane
+# unbind -T copy-mode-vi MouseDragEnd1Pane
 
 # Speed up status update intervals
-set -g status-interval 3
+set -g status-interval 1
 
 # -- tpm -----------------------------------------------------------------------
 
