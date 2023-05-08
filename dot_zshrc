@@ -174,4 +174,3 @@ function aria2dnp() {  # aria2c download without proxy
   export https_proxy=$tmp_https_proxy
   export ALL_PROXY=$tmp_all_proxy
 }
-export -f aria2dnp
