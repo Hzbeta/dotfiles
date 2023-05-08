@@ -156,4 +156,22 @@ bindkey ' ' magic-space                       # [Space] - don't do history expan
 # Costom alias
 alias czm='chezmoi'
 alias cl='clear'
-alias aria2d='aria2c -s 5 -x 5 -k 1M -c' # aria2c download with 5 connections, 1M chunk size and continue download 
+alias aria2d='aria2c -s 8 -x 8 -k 1M -c' # aria2c download with 5 connections, 1M chunk size and continue download 
+
+# Custom functions
+function aria2dnp() {  # aria2c download without proxy
+  tmp_http_proxy=$http_proxy
+  tmp_https_proxy=$https_proxy
+  tmp_all_proxy=$ALL_PROXY
+
+  unset http_proxy
+  unset https_proxy
+  unset ALL_PROXY
+
+  aria2c -s 8 -x 8 -k 1M -c "$@"
+
+  export http_proxy=$tmp_http_proxy
+  export https_proxy=$tmp_https_proxy
+  export ALL_PROXY=$tmp_all_proxy
+}
+export -f aria2dnp
