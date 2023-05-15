@@ -155,7 +155,7 @@ bindkey ' ' magic-space                       # [Space] - don't do history expan
 
 # Misc settings
 if command -v fzf &> /dev/null && command -v exa &> /dev/null; then          # use exa to preview with enhancd
-  export ENHANCD_FILTER="fzf --preview 'exa -al --tree --level 1 --group-directories-first --header --no-user --no-time --no-filesize --no-permissions {}' --preview-window right,50% --height 35% --reverse --ansi"
+  export ENHANCD_FILTER="fzf --preview 'exa -al --tree --level 1 --group-directories-first --header --git --git-ignore --no-user --no-time --no-filesize --no-permissions {}' --preview-window right,50% --height 35% --reverse --ansi"
 fi
 
 # Costom alias
