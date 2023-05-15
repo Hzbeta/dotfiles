@@ -28,6 +28,6 @@ elif command -v vim &>/dev/null; then
     export EDITOR=vim
 elif command -v nano &>/dev/null; then
     export EDITOR=nano
-else
+elif command -v vi &>/dev/null; then
     export EDITOR=vi
 fi
