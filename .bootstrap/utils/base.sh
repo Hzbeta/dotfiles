@@ -51,3 +51,50 @@ function log() {
     esac
     echo -e "$status $message"
 }
+
+function get_linux_distro() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        echo $NAME
+    elif type lsb_release >/dev/null 2>&1; then
+        echo "$(lsb_release -si)"
+    elif [ -f /etc/lsb-release ]; then
+        . /etc/lsb-release
+        echo $DISTRIB_ID
+    elif [ -f /etc/debian_version ]; then
+        echo Debian
+    else
+        echo "Unknown"
+    fi
+}
+
+function get_package_manager() {
+    local distro=$1
+
+    case $distro in
+    Ubuntu)
+        echo "sudo apt install -y"
+        ;;
+    Debian)
+        echo "sudo apt install -y"
+        ;;
+    CentOS)
+        echo "sudo yum install -y"
+        ;;
+    Fedora)
+        echo "sudo dnf install -y"
+        ;;
+    Arch\ Linux)
+        echo "sudo pacman -S --noconfirm"
+        ;;
+    *)
+        echo "Unknown"
+        ;;
+    esac
+}
+
+function activate_homebrew() {
+    if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+        eval "$("/home/linuxbrew/.linuxbrew/bin/brew" shellenv)"
+    fi
+}

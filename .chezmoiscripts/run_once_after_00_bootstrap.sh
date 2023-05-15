@@ -34,13 +34,15 @@ while $is_need_confirm; do
     # ask for each module installation
     for module in "${cm_user_modules[@]}"; do
         # shellcheck source=/dev/null
-        source "$chezmoi_source_path/.bootstrap/installers/${module}.sh"
-        if ! "check_is_${module}_installed"; then
+        source "$chezmoi_source_path/.bootstrap/installers/${module}"
+        # get module name by removing the number prefix and file extension
+        module_name="$(echo "$module" | sed 's/^[0-9_]*\([^\.]*\)\..*$/\1/')"
+        if ! "check_is_${module_name}_installed"; then
             if [ "$CM_INSTALL_MODULE" = "all" ] || [ "$CM_INSTALL_MODULE" = "test" ]; then
-                need_install_modules+=("${module}")
+                need_install_modules+=("${module_name}")
             else
-                if confirm "$(log info "install ${module}?")"; then
-                    need_install_modules+=("${module}")
+                if confirm "$(log info "install ${module_name}?")"; then
+                    need_install_modules+=("${module_name}")
                 fi
             fi
         fi

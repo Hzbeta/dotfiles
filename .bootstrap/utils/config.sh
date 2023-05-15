@@ -6,11 +6,15 @@ cm_user_modules=()
 
 # auto get modules in installer folder
 # need to specify the path to the chezmoi source-path
-while IFS='' read -r line; do cm_user_modules+=("$line"); done < <(find "$installer_dir/"*.sh -print0 | xargs -0 -n1 basename | sed 's/\.[^.]*$//')
+# we can use the number prefix to control the install order of the modules
+# for example: 00_homebrew.sh will be installed before 01_zsh.sh
+while IFS='' read -r line; do
+    cm_user_modules+=("$line")
+done < <(find "$installer_dir/"*.sh -print0 | xargs -0 -n1 basename)
 
-# or you can specify the modules list
+# or we can specify the modules list
 # cm_user_modules=(
-#     proxy
+#     zsh
 # )
 
 unset installer_dir
