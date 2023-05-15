@@ -35,7 +35,7 @@ fi
 
 # Zi init
 if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
-    sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
+  sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
 fi
 # shellcheck source=/dev/null
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh"
@@ -46,58 +46,58 @@ zzinit
 
 # Meta, used for p10k to skip its setup on initialization
 zi light-mode for \
-    z-shell/z-a-meta-plugins \
+  z-shell/z-a-meta-plugins \
     @romkatv  # for p10k
 
 # Plugins need to load immediately
 # if OMZL::history.zsh are lazy loaded,         the history will show incomplete
 zi for \
-    OMZL::history.zsh \
+  OMZL::history.zsh \
 
 # Some lazy load plugins
 zi wait lucid for \
-    atinit'ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
-        z-shell/F-Sy-H \
-    atload'!_zsh_autosuggest_start' \
-        zsh-users/zsh-autosuggestions \
-    atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down;" \
-        zsh-users/zsh-history-substring-search \
-    has'tmux' atload'omt install -s' \
-      Hzbeta/omt-manager \
-    zpm-zsh/ls \
-    OMZP::docker \
-    OMZP::extract \
-    OMZP::sudo \
-    OMZP::command-not-found \
+  atinit'ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay' \
+    z-shell/F-Sy-H \
+  atload'!_zsh_autosuggest_start' \
+    zsh-users/zsh-autosuggestions \
+  atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down;" \
+    zsh-users/zsh-history-substring-search \
+  has'tmux' atload'omt install -s' \
+    Hzbeta/omt-manager \
+  zpm-zsh/ls \
+  OMZP::docker \
+  OMZP::extract \
+  OMZP::sudo \
+  OMZP::command-not-found \
 
 # Some fzf related plugins
 # https://github.com/junegunn/fzf
 # with fzf-history-search, you can use ctrl+r to search history
 zi wait lucid has'fzf' for \
-        b4b4r07/enhancd \
-    atinit'zicompinit' \
-        Aloxaf/fzf-tab \
-    joshskidmore/zsh-fzf-history-search \
+  b4b4r07/enhancd \
+  atinit'zicompinit' \
+    Aloxaf/fzf-tab \
+  joshskidmore/zsh-fzf-history-search \
 
 # Auto change node version base on .nvmrc file
 # https://github.com/lukechilds/zsh-nvm
 export NVM_AUTO_USE=true
-zi ice wait lucid has'pnpm'
-zi load lukechilds/zsh-nvm
+zi wait lucid has'pnpm' for \
+  lukechilds/zsh-nvm \
 
 # Completions
 # Should run 'zicompinit; zicdreplay' after the last completion is loaded
 
 # As completion
 zi wait lucid blockf as'completion' for \
-    mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
-        https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
-    atload'zicompinit; zicdreplay' \
-        zsh-users/zsh-completions \
+  mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
+    https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
+  atload'zicompinit; zicdreplay' \
+    zsh-users/zsh-completions \
 
 zi wait lucid blockf for \
-    atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone" \
-        g-plane/pnpm-shell-completion
+  atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone" \
+    g-plane/pnpm-shell-completion
 # <<<<<<<<<<<<<<<<<<<<<<<<<<
 # <<<<< zi plugins end <<<<<
 
@@ -152,6 +152,11 @@ bindkey '^[[1;5D' backward-word               # [Ctrl-LeftArrow] - move backward
 bindkey ' ' magic-space                       # [Space] - don't do history expansion
 # <<<<<<<<<<<<<<<<<<<<<<<<
 # <<< key bindings end <<<
+
+# Misc settings
+if command -v fzf &> /dev/null && command -v exa &> /dev/null; then          # use exa to preview with enhancd
+  export ENHANCD_FILTER="fzf --preview 'exa -al --tree --level 1 --group-directories-first --header --no-user --no-time --no-filesize --no-permissions {}' --preview-window right,50% --height 35% --reverse --ansi"
+fi
 
 # Costom alias
 alias czm='chezmoi'
