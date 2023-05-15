@@ -81,7 +81,7 @@ fi
 
 # base installation
 sudo apt update
-sudo apt install -y wget curl git
+sudo apt install -y wget curl git build-essential
 
 # install modules
 for module in "${need_install_modules[@]}"; do
