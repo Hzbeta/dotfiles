@@ -5,7 +5,7 @@
 tools_info_list=(
     shellcheck
     tmux
-    fzf
+    'fzf,brew'
     'exa,brew'
 )
 
