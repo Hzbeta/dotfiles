@@ -154,28 +154,49 @@ bindkey ' ' magic-space                       # [Space] - don't do history expan
 # <<< key bindings end <<<
 
 # Misc settings
+# for enhancd
 if command -v fzf &> /dev/null && command -v exa &> /dev/null; then          # use exa to preview with enhancd
-  export ENHANCD_FILTER="fzf --preview 'exa -al --tree --level 1 --group-directories-first --header --git --git-ignore --no-user --no-time --no-filesize --no-permissions {}' --preview-window right,50% --height 35% --reverse --ansi"
+  export ENHANCD_FILTER="fzf --preview 'exa -al --tree --level 1 --group-directories-first --header --git --git-ignore --no-user --no-time --no-filesize --no-permissions {}' --preview-window right,40% --height 50% --reverse"
 fi
+# for fzf
+export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
 
 # Costom alias
 alias czm='chezmoi'
 alias cl='clear'
-alias aria2d='aria2c -s 8 -x 8 -k 1M -c' # aria2c download with 5 connections, 1M chunk size and continue download 
+alias aria2d='aria2c -s 8 -x 8 -k 1M -c' # aria2c download with 5 connections, 1M chunk size and continue download
 
 # Custom functions
-function aria2dnp() {  # aria2c download without proxy
-  tmp_http_proxy=$http_proxy
-  tmp_https_proxy=$https_proxy
-  tmp_all_proxy=$ALL_PROXY
+# aria2c download without proxy
+if command -v aria2c >/dev/null 2>&1; then
+  function aria2dnp() {
+    tmp_http_proxy=$http_proxy
+    tmp_https_proxy=$https_proxy
+    tmp_all_proxy=$ALL_PROXY
 
-  unset http_proxy
-  unset https_proxy
-  unset ALL_PROXY
+    unset http_proxy
+    unset https_proxy
+    unset ALL_PROXY
 
-  aria2c -s 8 -x 8 -k 1M -c "$@"
+    aria2c -s 8 -x 8 -k 1M -c "$@"
 
-  export http_proxy=$tmp_http_proxy
-  export https_proxy=$tmp_https_proxy
-  export ALL_PROXY=$tmp_all_proxy
-}
+    export http_proxy=$tmp_http_proxy
+    export https_proxy=$tmp_https_proxy
+    export ALL_PROXY=$tmp_all_proxy
+  }
+fi
+
+# use Q to quit and cd to the last dir
+if command -v joshuto >/dev/null 2>&1; then
+  jo() {
+    joshuto --output-file /tmp/joshutodir
+    if [ $? -eq 101 ] && [ -f /tmp/joshutodir ]; then 
+      LASTDIR=`cat /tmp/joshutodir`
+      rm -f /tmp/joshutodir 2>/dev/null
+      if [ -d "$LASTDIR" ]; then 
+        cd "$LASTDIR"
+      fi
+      unset LASTDIR
+    fi
+  }
+fi

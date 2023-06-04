@@ -7,6 +7,8 @@ tools_info_list=(
     tmux
     'fzf,brew'
     'exa,brew'
+    'fd,brew'
+    'joshuto,brew'
 )
 
 # processing tools list
