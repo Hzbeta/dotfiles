@@ -37,3 +37,8 @@ elif command -v nano &>/dev/null; then
 elif command -v vi &>/dev/null; then
   export EDITOR=vi
 fi
+
+# load nvm if exists
+NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+# shellcheck source=/dev/null
+[ -d "$NVM_DIR" ] && export NVM_DIR && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
