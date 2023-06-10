@@ -4,7 +4,7 @@
 # we can use `exa,brew` to install `exa` with homebrew
 tools_info_list=(
     shellcheck
-    tmux
+    'tmux,brew'
     'fzf,brew'
     'exa,brew'
     'fd,brew'
