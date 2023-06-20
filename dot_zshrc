@@ -65,7 +65,6 @@ zi wait lucid for \
   has'tmux' atload'omt install -s' \
     Hzbeta/omt-manager \
   zpm-zsh/ls \
-  OMZP::docker \
   OMZP::extract \
   OMZP::sudo \
   OMZP::command-not-found \
