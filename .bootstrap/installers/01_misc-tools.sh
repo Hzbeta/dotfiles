@@ -3,12 +3,13 @@
 # tools list
 # we can use `exa,brew` to install `exa` with homebrew
 tools_info_list=(
-    shellcheck
+    'shellcheck,nix'
     'tmux,nix'
     'fzf,nix'
     'lsd,nix'
     'fd,nix'
     'joshuto,nix'
+    'act,nix'
 )
 
 # processing tools list
