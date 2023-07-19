@@ -17,7 +17,7 @@ function install_zsh() {
     fi
 
     # change default shell to zsh
-    if ! sudo chsh -s "$(command -v zsh)"; then
+    if ! sudo usermod -s "$(command -v zsh)" "$(whoami)"; then
         log error "change default shell to zsh failed"
         return 1
     fi
