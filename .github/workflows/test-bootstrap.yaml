@@ -40,4 +40,5 @@ jobs:
         run: |
           source ~/.profile
           export CM_INSTALL_MODULE='test'
+          source "$HOME/.nix-profile/etc/profile.d/nix.sh"
           bash "$(chezmoi source-path)/.chezmoiscripts/run_once_after_00_bootstrap.sh" test

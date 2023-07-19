@@ -46,24 +46,22 @@ function install_misc-tools() {
             if command -v "$tool" &>/dev/null; then
                 break
             fi
-            if [[ "$method" == "default" ]]; then
-                method="$(get_package_manager "$(get_linux_distro)")"
-                if [[ "$method" == "Unknown" ]]; then
-                    log error "Unknown Linux Distro, please install $tool manually."
-                    return 1
+            if [[ "$method" == "nix" ]]; then # if the method is nix
+                if command -v nix-env &>/dev/null; then
+                    nix-env -iA nixpkgs."$tool" && break
                 fi
-                $method "$tool" && break
-            elif [[ "$method" == "nix" ]]; then
-                if ! command -v nix-env &>/dev/null; then
-                    log error "nix is not installed, please install nix manually."
-                    return 1
-                fi
-                nix-env -iA nixpkgs."$tool" && break
-            else
+            elif [[ "$method" != "default" ]]; then # if the method is not default
                 if command -v "$method" &>/dev/null; then
                     "$method" install "$tool" && break
                 fi
             fi
+            # if the method is default or the specified method command is not found
+            method="$(get_package_manager "$(get_linux_distro)")"
+            if [[ "$method" == "Unknown" ]]; then
+                log error "Unknown Linux Distro, please install $tool manually."
+                return 1
+            fi
+            $method "$tool" && break
         done
         if ! command -v "$tool" &>/dev/null; then
             log error "failed to install $tool"
