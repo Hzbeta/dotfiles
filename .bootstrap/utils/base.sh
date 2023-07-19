@@ -92,9 +92,3 @@ function get_package_manager() {
         ;;
     esac
 }
-
-function activate_homebrew() {
-    if [ -d "/home/linuxbrew/.linuxbrew" ]; then
-        eval "$("/home/linuxbrew/.linuxbrew/bin/brew" shellenv)"
-    fi
-}

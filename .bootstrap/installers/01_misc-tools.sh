@@ -4,11 +4,11 @@
 # we can use `exa,brew` to install `exa` with homebrew
 tools_info_list=(
     shellcheck
-    'tmux,brew'
-    'fzf,brew'
-    'lsd,brew'
-    'fd,brew'
-    'joshuto,brew'
+    'tmux,nix'
+    'fzf,nix'
+    'lsd,nix'
+    'fd,nix'
+    'joshuto,nix'
 )
 
 # processing tools list
@@ -26,8 +26,6 @@ done
 # this installer is for miscellaneous tools
 # don't need to check if it's installed or not
 function check_is_misc-tools_installed() {
-    
-    activate_homebrew
 
     for tool_info in "${tools_info_list[@]}"; do
         tool="${tool_info%%,*}"
@@ -40,8 +38,6 @@ function check_is_misc-tools_installed() {
 
 # install
 function install_misc-tools() {
-
-    activate_homebrew
 
     for tool_info in "${tools_info_list[@]}"; do
         tool="${tool_info%%,*}"
@@ -57,11 +53,16 @@ function install_misc-tools() {
                     return 1
                 fi
                 $method "$tool" && break
+            elif [[ "$method" == "nix" ]]; then
+                if ! command -v nix-env &>/dev/null; then
+                    log error "nix is not installed, please install nix manually."
+                    return 1
+                fi
+                nix-env -iA nixpkgs."$tool" && break
             else
                 if command -v "$method" &>/dev/null; then
                     "$method" install "$tool" && break
                 fi
-
             fi
         done
         if ! command -v "$tool" &>/dev/null; then

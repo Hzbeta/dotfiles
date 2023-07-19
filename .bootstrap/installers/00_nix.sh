@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# this installer is for miscellaneous tools
+# don't need to check if it's installed or not
+function check_is_nix_installed() {
+    if [ ! -d "/nix" ]; then
+        return 1
+    fi
+    return 0
+}
+
+# install
+function install_nix() {
+    sh <(curl -L https://nixos.org/nix/install) --no-daemon --yes
+    # shellcheck source=/dev/null
+    . ~/.nix-profile/etc/profile.d/nix.sh
+}
