@@ -72,19 +72,19 @@ function get_package_manager() {
     local distro=$1
 
     case $distro in
-    Ubuntu)
+    *Ubuntu*)
         echo "sudo apt install -y"
         ;;
-    Debian)
+    *Debian*)
         echo "sudo apt install -y"
         ;;
-    CentOS)
+    *CentOS*)
         echo "sudo yum install -y"
         ;;
-    Fedora)
+    *Fedora*)
         echo "sudo dnf install -y"
         ;;
-    Arch\ Linux)
+    *Arch*Linux*)
         echo "sudo pacman -S --noconfirm"
         ;;
     *)
