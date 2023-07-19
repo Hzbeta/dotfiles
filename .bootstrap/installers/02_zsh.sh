@@ -16,18 +16,18 @@ function install_zsh() {
         return 1
     fi
 
+    # activate zsh config
+    export ZSH_AUTO_TMUX=false
+    if ! zsh -c "source ~/.zshrc"; then
+        log error "activate zsh config failed"
+        return 1
+    fi
+
     # change default shell to zsh
     if ! sudo usermod -s "$(command -v zsh)" "$(whoami)"; then
         log error "change default shell to zsh failed"
         return 1
     fi
-
-    # activate zsh config
-    export ZSH_AUTO_TMUX=false
-    if ! zsh -i -c exit; then
-        log error "activate zsh config failed"
-        return 1
-    fi
-
+    
     return 0
 }
