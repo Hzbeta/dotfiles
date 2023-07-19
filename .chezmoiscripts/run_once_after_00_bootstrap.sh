@@ -80,8 +80,9 @@ if [ "$CM_INSTALL_MODULE" = "test" ]; then
 fi
 
 # base installation
+# TODO support more distros
 sudo apt update
-sudo apt install -y wget git
+sudo apt install -y wget git build-essential
 
 # install modules
 for module in "${need_install_modules[@]}"; do
