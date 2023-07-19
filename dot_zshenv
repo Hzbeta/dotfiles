@@ -1,3 +1,16 @@
+# for profile debug
+ZSH_PROFILE_DEBUG=false
+
+function debug_log() {
+  [[ "$ZSH_PROFILE_DEBUG" == "true" ]] && echo -e "\033[32m[Info]\033[0m $1"
+}
+
+function is_zsh_profile_debug() {
+  [[ "$ZSH_PROFILE_DEBUG" == "true" ]]
+}
+
+debug_log "zshenv begin..."
+
 # conda
 if [ -d "$HOME/miniconda3" ]; then
   # !! Contents within this block are managed by 'conda init' !!
@@ -25,6 +38,7 @@ fi
 if [ -d "/home/linuxbrew/.linuxbrew" ]; then
   eval "$("/home/linuxbrew/.linuxbrew/bin/brew" shellenv)"
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  debug_log "homebrew completions added to FPATH"
 fi
 
 # editor preference neovim > vim > nano > vi

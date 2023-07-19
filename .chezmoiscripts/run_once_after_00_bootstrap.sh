@@ -85,6 +85,7 @@ sudo apt install -y wget curl git build-essential
 
 # install modules
 for module in "${need_install_modules[@]}"; do
+    log info "installing $module..."
     if ! "install_${module}"; then
         log error "$module installation failed"
         exit 1

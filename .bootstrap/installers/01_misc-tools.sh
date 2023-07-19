@@ -6,7 +6,7 @@ tools_info_list=(
     shellcheck
     'tmux,brew'
     'fzf,brew'
-    'exa,brew'
+    'lsd,brew'
     'fd,brew'
     'joshuto,brew'
 )
