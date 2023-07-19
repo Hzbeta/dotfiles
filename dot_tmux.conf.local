@@ -441,9 +441,9 @@ set -g @plugin 'sainnhe/tmux-fzf'
 #
 # # /!\ do not "uncomment" the functions: the leading "# " characters are needed
 #
-# weather() {                                         # see https://github.com/chubin/wttr.in#one-line-output
-#   curl -f -s -m 2 'wttr.in?format=3' || printf '\n' # /!\ make sure curl is installed
-#   sleep 900                                         # sleep for 15 minutes, throttle network requests whatever the value of status-interval
+# weather() {                                           # see https://github.com/chubin/wttr.in#one-line-output
+#   wget -q -T 2 -O - 'wttr.in?format=3' || printf '\n' # /!\ make sure wget is installed
+#   sleep 900                                           # sleep for 15 minutes, throttle network requests whatever the value of status-interval
 # }
 #
 # online() {

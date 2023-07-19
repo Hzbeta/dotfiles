@@ -36,7 +36,7 @@ fi
 
 # Zi init
 if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
-  sh -c "$(curl -fsSL get.zshell.dev)" -- -a loader
+  sh -c "$(wget -qO- https://get.zshell.dev)" -- -a loader
 fi
 # shellcheck source=/dev/null
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh"
