@@ -4,8 +4,10 @@ on:
     paths:
       - '.bootstrap/**'
       - '.chezmoiscripts/run_once_after_00_bootstrap.sh'
+      - '.github/workflows/**'
   schedule:
     - cron: "0 0 * * 0"  # run every Sunday at 00:00 UTC
+  workflow_dispatch:
 
 jobs:
   test-bootstrap:
