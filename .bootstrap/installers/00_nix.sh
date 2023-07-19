@@ -11,7 +11,7 @@ function check_is_nix_installed() {
 
 # install
 function install_nix() {
-    sh <(wget -qO- https://nixos.org/nix/install) --no-daemon --yes
+    sh <(wget -qO- https://nixos.org/nix/install) --no-daemon --yes --no-modify-profile
     # shellcheck source=/dev/null
     source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 }

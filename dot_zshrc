@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 # lanuch tmux if it is not running
-is_zsh_profile_debug || if command -v tmux &> /dev/null && [ -z $TMUX ]; then
+is_zsh_profile_debug || [ "$ZSH_AUTO_TMUX" != "false" ] && if command -v tmux &> /dev/null && [ -z $TMUX ]; then
   if [[ ! "$TERM_PROGRAM" == "vscode" ]]; then
     tmux_session_name=" main"
     exec tmux new-session -A -s "$tmux_session_name"

@@ -41,6 +41,14 @@ if [ -d "/home/linuxbrew/.linuxbrew" ]; then
   debug_log "homebrew completions added to FPATH"
 fi
 
+# nix
+if [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+  # shellcheck source=/dev/null
+  source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+  FPATH="$HOME/.nix-profile/share/zsh/site-functions:${FPATH}"
+  debug_log "nix completions added to FPATH"
+fi
+
 # editor preference neovim > vim > nano > vi
 if command -v nvim &>/dev/null; then
   export EDITOR=nvim

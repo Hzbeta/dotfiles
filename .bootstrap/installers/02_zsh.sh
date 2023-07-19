@@ -22,5 +22,12 @@ function install_zsh() {
         return 1
     fi
 
+    # activate zsh config
+    export ZSH_AUTO_TMUX=false
+    if ! zsh -i -c exit; then
+        log error "activate zsh config failed"
+        return 1
+    fi
+
     return 0
 }
