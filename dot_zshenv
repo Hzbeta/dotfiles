@@ -35,20 +35,26 @@ if ! command -v pnpm &>/dev/null && [ -d "$HOME/.local/share/pnpm" ]; then
 fi
 
 # homebrew
-if ! command -v brew &>/dev/null && [ -d "/home/linuxbrew/.linuxbrew" ]; then
+if [ -d "/home/linuxbrew/.linuxbrew" ]; then
   debug_log "homebrew init"
   eval "$("/home/linuxbrew/.linuxbrew/bin/brew" shellenv)"
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-  debug_log "homebrew completions added to FPATH"
+  # add homebrew completions to FPATH
+  if [[ ":$FPATH:" != *"$(brew --prefix)/share/zsh/site-functions"* ]]; then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+    debug_log "homebrew completions added to FPATH"
+  fi
 fi
 
 # nix
-if ! command -v nix &>/dev/null && [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+if [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
   debug_log "nix init"
   # shellcheck source=/dev/null
   source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-  FPATH="$HOME/.nix-profile/share/zsh/site-functions:${FPATH}"
-  debug_log "nix completions added to FPATH"
+  # add nix completions to FPATH
+  if [[ ":$FPATH:" != *":$HOME/.nix-profile/share/zsh/site-functions:"* ]]; then
+    FPATH="$HOME/.nix-profile/share/zsh/site-functions:${FPATH}"
+    debug_log "nix completions added to FPATH"
+  fi
 fi
 
 # editor preference neovim > vim > nano > vi
