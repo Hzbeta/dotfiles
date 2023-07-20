@@ -2,10 +2,15 @@
 
 debug_log ".zshrc begin..."
 
+# Custom alias and functions
+debug_log "source custom-func.zsh"
+source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/custom-func.zsh"
+
 # lanuch tmux if it is not running
 if ! is_zsh_profile_debug && [ "${ZSH_AUTO_TMUX:-true}" != "false" ] && command -v tmux &> /dev/null && [ -z $TMUX ]; then
   if [[ ! "$TERM_PROGRAM" == "vscode" ]]; then
-    tmux_session_name=" main"
+    distro_icon="$(get_distro_icon "icon")"
+    tmux_session_name="$distro_icon main"
     exec tmux new-session -A -s "$tmux_session_name"
   # else
   #   tmux_session_name="󰨞 $(pwd | awk '{gsub(/\./, "_"); print}')"
@@ -117,9 +122,6 @@ debug_log "zi plugins loaded"
 debug_log "source key-binding.zsh"
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/key-binding.zsh"
 
-# Custom alias and functions
-debug_log "source custom-func.zsh"
-source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/custom-func.zsh"
 
 # Misc settings
 # for enhancd
