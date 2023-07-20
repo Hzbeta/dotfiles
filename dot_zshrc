@@ -1,7 +1,9 @@
 #!/bin/zsh
 
+debug_log ".zshrc begin..."
+
 # lanuch tmux if it is not running
-is_zsh_profile_debug || [ "$ZSH_AUTO_TMUX" != "false" ] && if command -v tmux &> /dev/null && [ -z $TMUX ]; then
+if ! is_zsh_profile_debug && [ "${ZSH_AUTO_TMUX:-true}" != "false" ] && command -v tmux &> /dev/null && [ -z $TMUX ]; then
   if [[ ! "$TERM_PROGRAM" == "vscode" ]]; then
     tmux_session_name=" main"
     exec tmux new-session -A -s "$tmux_session_name"
@@ -18,7 +20,7 @@ fi
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-is_zsh_profile_debug || if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+if ! is_zsh_profile_debug && [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   # shellcheck source=/dev/null
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -97,7 +99,7 @@ zi wait lucid blockf as'completion' for \
     zsh-users/zsh-completions \
 
 zi wait lucid blockf for \
-  atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone" \
+  has'pnpm' atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone" \
     g-plane/pnpm-shell-completion
 
 debug_log "zi plugins loaded"
@@ -203,6 +205,8 @@ if command -v joshuto >/dev/null 2>&1; then
     fi
   }
 fi
+
+debug_log "zshrc end"
 
 # clear the env
 unset ZSH_PROFILE_DEBUG
