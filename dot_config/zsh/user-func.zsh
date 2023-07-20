@@ -41,19 +41,3 @@ if command -v joshuto >/dev/null 2>&1; then
         fi
     }
 fi
-
-# lsd
-if command -v lsd >/dev/null 2>&1; then
-    function lla() {
-        lsd --header --long --all $@
-    }
-    compdef lla=lsd
-    function lls() {
-        lsd --header --long --total-size $@
-    }
-    compdef lls=lsd
-    function llas() {
-        lsd --header --long --all --total-size $@
-    }
-    compdef lls=lsd
-fi

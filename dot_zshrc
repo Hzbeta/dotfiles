@@ -45,14 +45,14 @@ fi
 if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
     sh -c "$(wget -qO- https://get.zshell.dev)" -- -a loader
 fi
+debug_log "zi init..."
 # shellcheck source=/dev/null
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh"
 zzinit
-debug_log "zi initiated"
 
 # >>>>> zi plugins >>>>>
 # >>>>>>>>>>>>>>>>>>>>>>
-
+debug_log "zi plugins loading..."
 # Meta, used for p10k to skip its setup on initialization
 zi for \
     z-shell/z-a-meta-plugins \
@@ -63,6 +63,8 @@ zi for \
 zi for \
     OMZL::history.zsh \
 
+zi snippet "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/plugin/ls.plugin.zsh"
+
 # Some lazy load plugins
 zi wait lucid for \
     atinit'zicompinit; zicdreplay' \
@@ -71,7 +73,6 @@ zi wait lucid for \
         zsh-users/zsh-autosuggestions \
     atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down;" \
         zsh-users/zsh-history-substring-search \
-    zpm-zsh/ls \
     OMZP::extract \
     OMZP::sudo \
     OMZP::command-not-found \
@@ -104,17 +105,16 @@ zi wait lucid for \
 # Should run 'zicompinit; zicdreplay' after the last completion is loaded
 
 # As completion
+debug_log "zsh compinit..."
+zi wait lucid blockf for \
+    has'pnpm' atclone"./zplug.zsh" atpull"%atclone" \
+        g-plane/pnpm-shell-completion
+
 zi wait lucid blockf as'completion' for \
-    mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
+    has'chezmoi' mv'chezmoi.zsh -> _chezmoi' \
         https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
     atload'zicompinit; zicdreplay' \
         zsh-users/zsh-completions \
-
-zi wait lucid blockf for \
-    has'pnpm' atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone" \
-        g-plane/pnpm-shell-completion
-
-debug_log "zi plugins loaded"
 # <<<<<<<<<<<<<<<<<<<<<<<<<<
 # <<<<< zi plugins end <<<<<
 
@@ -134,7 +134,7 @@ fi
 # for fzf
 export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
 
-debug_log "zshrc end"
+debug_log ".zshrc end!"
 
 # clear the env
 unset ZSH_PROFILE_DEBUG

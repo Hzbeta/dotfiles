@@ -9,12 +9,16 @@ function is_zsh_profile_debug() {
 
 debug_log ".zshenv begin..."
 
+# Skip the not really helping Ubuntu global compinit
+# shellcheck disable=SC2034
+skip_global_compinit=1
+
 # custom env
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # conda
 if ! command -v conda &>/dev/null && [[ -d "$HOME/miniconda3" ]]; then
-    debug_log "conda init"
+    debug_log "conda init..."
     # !! Contents within this block are managed by 'conda init' !!
     __conda_setup="$("$HOME/miniconda3/bin/conda" 'shell.zsh' 'hook' 2>/dev/null)"
     if [[ $? -eq 0 ]]; then
@@ -32,14 +36,14 @@ fi
 
 # pnpm
 if ! command -v pnpm &>/dev/null && [[ -d "$HOME/.local/share/pnpm" ]]; then
-    debug_log "pnpm init"
+    debug_log "pnpm init..."
     export PNPM_HOME="$HOME/.local/share/pnpm"
     export PATH="$PNPM_HOME:$PATH"
 fi
 
 # homebrew
 if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
-    debug_log "homebrew init"
+    debug_log "homebrew init..."
     eval "$("/home/linuxbrew/.linuxbrew/bin/brew" shellenv)"
     # add homebrew completions to FPATH
     if [[ ":$FPATH:" != *"$(brew --prefix)/share/zsh/site-functions"* ]]; then
@@ -50,7 +54,7 @@ fi
 
 # nix
 if [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
-    debug_log "nix init"
+    debug_log "nix init..."
     # shellcheck source=/dev/null
     source "$HOME/.nix-profile/etc/profile.d/nix.sh"
     # add nix completions to FPATH
@@ -73,10 +77,10 @@ fi
 
 # load nvm if exists
 if ! command -v nvm &>/dev/null; then
-    debug_log "nvm init"
+    debug_log "nvm init..."
     NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
     # shellcheck source=/dev/null
     [[ -d "$NVM_DIR" ]] && export NVM_DIR && [[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
 fi
 
-debug_log "zshenv end"
+debug_log ".zshenv end!"
