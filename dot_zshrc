@@ -3,8 +3,8 @@
 debug_log ".zshrc begin..."
 
 # Custom alias and functions
-debug_log "source custom-func.zsh"
-source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/custom-func.zsh"
+debug_log "source utils.zsh"
+source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/utils.zsh"
 
 # lanuch tmux if it is not running
 if ! is_zsh_profile_debug && [[ "${ZSH_AUTO_TMUX:-true}" != "false" ]] && command -v tmux &> /dev/null && [[ -z $TMUX ]]; then
@@ -122,6 +122,9 @@ debug_log "zi plugins loaded"
 debug_log "source key-binding.zsh"
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/key-binding.zsh"
 
+# Custom alias and functions
+debug_log "source user-func.zsh"
+source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/user-func.zsh"
 
 # Misc settings
 # for enhancd
@@ -137,3 +140,5 @@ debug_log "zshrc end"
 unset ZSH_PROFILE_DEBUG
 unfunction is_zsh_profile_debug
 unfunction debug_log
+unfunction get_distro_icon
+unfunction get_linux_distro
