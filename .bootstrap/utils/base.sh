@@ -53,39 +53,54 @@ function log() {
 }
 
 function get_linux_distro() {
-    if [ -f /etc/os-release ]; then
+    if [[ -f /etc/os-release ]]; then
         . /etc/os-release
-        echo $NAME
+        echo $ID | tr '[:upper:]' '[:lower:]'
     elif type lsb_release >/dev/null 2>&1; then
-        echo "$(lsb_release -si)"
-    elif [ -f /etc/lsb-release ]; then
+        echo "$(lsb_release -si)" | tr '[:upper:]' '[:lower:]'
+    elif [[ -f /etc/lsb-release ]]; then
         . /etc/lsb-release
-        echo $DISTRIB_ID
-    elif [ -f /etc/debian_version ]; then
-        echo Debian
+        echo $DISTRIB_ID | tr '[:upper:]' '[:lower:]'
+    elif [[ -f /etc/debian_version ]]; then
+        echo "debian"
     else
-        echo "Unknown"
+        echo "unknown"
     fi
 }
 
 function get_package_manager() {
-    local distro=$1
+    local distro mode
+    distro="$(get_linux_distro)"
+    mode=$1  # mode could be "install" or "update"
 
     case $distro in
-    *Ubuntu*)
-        echo "sudo apt install -y"
+    *ubuntu* | *debian*)
+        if [[ "$mode" == "install" ]]; then
+            echo "sudo apt install -y"
+        elif [[ "$mode" == "update" ]]; then
+            echo "sudo apt update"
+        fi
         ;;
-    *Debian*)
-        echo "sudo apt install -y"
+    *centos*)
+        if [[ "$mode" == "install" ]]; then
+            echo "sudo yum install -y"
+        elif [[ "$mode" == "update" ]]; then
+            echo "sudo yum update -y"
+        fi
         ;;
-    *CentOS*)
-        echo "sudo yum install -y"
+    *fedora*)
+        if [[ "$mode" == "install" ]]; then
+            echo "sudo dnf install -y"
+        elif [[ "$mode" == "update" ]]; then
+            echo "sudo dnf update -y"
+        fi
         ;;
-    *Fedora*)
-        echo "sudo dnf install -y"
-        ;;
-    *Arch*Linux*)
-        echo "sudo pacman -S --noconfirm"
+    *arch*)
+        if [[ "$mode" == "install" ]]; then
+            echo "sudo pacman -S --noconfirm"
+        elif [[ "$mode" == "update" ]]; then
+            echo "sudo pacman -Syu"
+        fi
         ;;
     *)
         echo "Unknown"

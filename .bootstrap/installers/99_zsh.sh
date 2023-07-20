@@ -11,7 +11,11 @@ function check_is_zsh_installed() {
 
 # install zsh
 function install_zsh() {
-    if ! sudo apt install -y zsh; then
+
+    local install_cmd
+    install_cmd=$(get_package_manager "install")
+
+    if ! $install_cmd git zsh; then
         log error "zsh installation failed"
         return 1
     fi

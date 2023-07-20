@@ -57,7 +57,7 @@ function install_misc-tools() {
                 fi
             fi
             # if the method is default or the specified method command is not found
-            method="$(get_package_manager "$(get_linux_distro)")"
+            method="$(get_package_manager "install")"
             if [[ "$method" == "Unknown" ]]; then
                 log error "Unknown Linux Distro, please install $tool manually."
                 return 1
