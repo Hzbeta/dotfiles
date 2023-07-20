@@ -66,8 +66,6 @@ zi wait lucid for \
     zsh-users/zsh-autosuggestions \
   atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down;" \
     zsh-users/zsh-history-substring-search \
-  has'tmux' atload'omt install -s' \
-    Hzbeta/omt-manager \
   zpm-zsh/ls \
   OMZP::extract \
   OMZP::sudo \
@@ -82,11 +80,20 @@ zi wait lucid has'fzf' for \
     Aloxaf/fzf-tab \
   joshskidmore/zsh-fzf-history-search \
 
+# Some special plugins
 # Auto change node version base on .nvmrc file
 # https://github.com/lukechilds/zsh-nvm
 export NVM_AUTO_USE=true
 zi wait lucid has'pnpm' for \
   lukechilds/zsh-nvm \
+
+# Oh My Tmux
+export MANAGER_OMT_DIR_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/oh-my-tmux"
+export MANAGER_OMT_CONF_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/tmux.conf"
+export MANAGER_OMT_LOCAL_CONF_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/tmux.conf.local"
+zi wait lucid for \
+  has'tmux' atload'omt install -s' \
+    Hzbeta/omt-manager \
 
 # Completions
 # Should run 'zicompinit; zicdreplay' after the last completion is loaded

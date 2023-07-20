@@ -9,6 +9,9 @@ function is_zsh_profile_debug() {
 
 debug_log ".zshenv begin..."
 
+# custom env
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # conda
 if ! command -v conda &>/dev/null && [ -d "$HOME/miniconda3" ]; then
   debug_log "conda init"
