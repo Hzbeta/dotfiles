@@ -113,57 +113,13 @@ debug_log "zi plugins loaded"
 # <<<<<<<<<<<<<<<<<<<<<<<<<<
 # <<<<< zi plugins end <<<<<
 
-# >>> key bindings start >>>
-# >>>>>>>>>>>>>>>>>>>>>>>>>>
-# Some key bindings from `Oh My Zsh`
-# Make sure that the terminal is in application mode when zle is active, since
-# only then values from $terminfo are valid
-if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
-  function zle-line-init() {
-    echoti smkx
-  }
-  function zle-line-finish() {
-    echoti rmkx
-  }
-  zle -N zle-line-init
-  zle -N zle-line-finish
-fi
+# Key bindings
+debug_log "source key-binding.zsh"
+source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/key-binding.zsh"
 
-# Use emacs key bindings
-bindkey -e
-
-# Start typing + [Up-Arrow] - fuzzy find history forward
-if [[ -n "${terminfo[kcuu1]}" ]]; then
-  autoload -U up-line-or-beginning-search
-  zle -N up-line-or-beginning-search
-  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
-fi
-# Start typing + [Down-Arrow] - fuzzy find history backward
-if [[ -n "${terminfo[kcud1]}" ]]; then
-  autoload -U down-line-or-beginning-search
-  zle -N down-line-or-beginning-search
-  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
-fi
-# [Home] - Go to beginning of line
-if [[ -n "${terminfo[khome]}" ]]; then
-  bindkey "${terminfo[khome]}" beginning-of-line
-fi
-# [End] - Go to end of line
-if [[ -n "${terminfo[kend]}" ]]; then
-  bindkey "${terminfo[kend]}"  end-of-line
-fi
-# [Ctrl-e] Edit the current command line in $EDITOR
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey '\C-e' edit-command-line
-
-# Some key bindings that don't need to autoload functions
-bindkey '^[[3;5~' kill-word                   # [Ctrl-Delete] - delete whole forward-word
-bindkey '^[[1;5C' forward-word                # [Ctrl-RightArrow] - move forward one word
-bindkey '^[[1;5D' backward-word               # [Ctrl-LeftArrow] - move backward one word
-bindkey ' ' magic-space                       # [Space] - don't do history expansion
-# <<<<<<<<<<<<<<<<<<<<<<<<
-# <<< key bindings end <<<
+# Custom alias and functions
+debug_log "source custom-func.zsh"
+source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/custom-func.zsh"
 
 # Misc settings
 # for enhancd
@@ -172,46 +128,6 @@ if command -v fzf &> /dev/null && command -v lsd &> /dev/null; then
 fi
 # for fzf
 export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
-
-# Costom alias
-alias czm='chezmoi'
-alias cl='clear'
-alias aria2d='aria2c -s 8 -x 8 -k 1M -c' # aria2c download with 5 connections, 1M chunk size and continue download
-
-# Custom functions
-# aria2c download without proxy
-if command -v aria2c >/dev/null 2>&1; then
-  function aria2dnp() {
-    tmp_http_proxy=$http_proxy
-    tmp_https_proxy=$https_proxy
-    tmp_all_proxy=$ALL_PROXY
-
-    unset http_proxy
-    unset https_proxy
-    unset ALL_PROXY
-
-    aria2c -s 8 -x 8 -k 1M -c "$@"
-
-    export http_proxy=$tmp_http_proxy
-    export https_proxy=$tmp_https_proxy
-    export ALL_PROXY=$tmp_all_proxy
-  }
-fi
-
-# use Q to quit and cd to the last dir
-if command -v joshuto >/dev/null 2>&1; then
-  jo() {
-    joshuto --output-file /tmp/joshutodir
-    if [ $? -eq 101 ] && [ -f /tmp/joshutodir ]; then 
-      LASTDIR=`cat /tmp/joshutodir`
-      rm -f /tmp/joshutodir 2>/dev/null
-      if [ -d "$LASTDIR" ]; then 
-        cd "$LASTDIR"
-      fi
-      unset LASTDIR
-    fi
-  }
-fi
 
 debug_log "zshrc end"
 
