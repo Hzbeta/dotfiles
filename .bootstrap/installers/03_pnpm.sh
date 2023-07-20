@@ -2,7 +2,7 @@
 
 # check if pnpm is installed
 function check_is_pnpm_installed() {
-    if [ ! -d "$HOME/.local/share/pnpm" ]; then
+    if [[ ! -d "$HOME/.local/share/pnpm" ]]; then
         return 1
     fi
 

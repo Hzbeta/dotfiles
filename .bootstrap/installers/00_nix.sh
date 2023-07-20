@@ -3,7 +3,7 @@
 # this installer is for miscellaneous tools
 # don't need to check if it's installed or not
 function check_is_nix_installed() {
-    if [ ! -d "/nix" ]; then
+    if [[ ! -d "/nix" ]]; then
         return 1
     fi
     return 0

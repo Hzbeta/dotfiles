@@ -7,27 +7,27 @@ debug_log "source custom-func.zsh"
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/custom-func.zsh"
 
 # lanuch tmux if it is not running
-if ! is_zsh_profile_debug && [ "${ZSH_AUTO_TMUX:-true}" != "false" ] && command -v tmux &> /dev/null && [ -z $TMUX ]; then
-  if [[ ! "$TERM_PROGRAM" == "vscode" ]]; then
-    distro_icon="$(get_distro_icon "icon")"
-    tmux_session_name="$distro_icon main"
-    exec tmux new-session -A -s "$tmux_session_name"
-  # else
-  #   tmux_session_name="󰨞 $(pwd | awk '{gsub(/\./, "_"); print}')"
-  #   if tmux has-session -t "$tmux_session_name" 2>/dev/null; then
-  #     # create a new window
-  #     tmux new-window -t "$tmux_session_name"
-  #   fi
-  #   exec tmux new-session -A -s "$tmux_session_name"
-  fi
+if ! is_zsh_profile_debug && [[ "${ZSH_AUTO_TMUX:-true}" != "false" ]] && command -v tmux &> /dev/null && [[ -z $TMUX ]]; then
+    if [[ ! "$TERM_PROGRAM" == "vscode" ]]; then
+        distro_icon="$(get_distro_icon "icon")"
+        tmux_session_name="$distro_icon main"
+        exec tmux new-session -A -s "$tmux_session_name"
+    # else
+    #   tmux_session_name="󰨞 $(pwd | awk '{gsub(/\./, "_"); print}')"
+    #   if tmux has-session -t "$tmux_session_name" 2>/dev/null; then
+    #     # create a new window
+    #     tmux new-window -t "$tmux_session_name"
+    #   fi
+    #   exec tmux new-session -A -s "$tmux_session_name"
+    fi
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if ! is_zsh_profile_debug && [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  # shellcheck source=/dev/null
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    # shellcheck source=/dev/null
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Source .profile to add some program to PATH
@@ -38,12 +38,12 @@ debug_log "source ~/.profile"
 # Add a vscode degraded shell integration for p10k
 if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 # shellcheck disable=SC2034
-  ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
+    ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
 fi
 
 # Zi init
 if [[ ! -r "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh" ]]; then
-  sh -c "$(wget -qO- https://get.zshell.dev)" -- -a loader
+    sh -c "$(wget -qO- https://get.zshell.dev)" -- -a loader
 fi
 # shellcheck source=/dev/null
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zi/init.zsh"
@@ -55,64 +55,64 @@ debug_log "zi initiated"
 
 # Meta, used for p10k to skip its setup on initialization
 zi for \
-  z-shell/z-a-meta-plugins \
-    @romkatv  # for p10k
+    z-shell/z-a-meta-plugins \
+        @romkatv  # for p10k
 
 # Plugins need to load immediately
 # if OMZL::history.zsh are lazy loaded,         the history will show incomplete
 zi for \
-  OMZL::history.zsh \
+    OMZL::history.zsh \
 
 # Some lazy load plugins
 zi wait lucid for \
-  atinit'zicompinit; zicdreplay' \
-    z-shell/F-Sy-H \
-  atload'!_zsh_autosuggest_start' \
-    zsh-users/zsh-autosuggestions \
-  atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down;" \
-    zsh-users/zsh-history-substring-search \
-  zpm-zsh/ls \
-  OMZP::extract \
-  OMZP::sudo \
-  OMZP::command-not-found \
+    atinit'zicompinit; zicdreplay' \
+        z-shell/F-Sy-H \
+    atload'!_zsh_autosuggest_start' \
+        zsh-users/zsh-autosuggestions \
+    atload"bindkey '^[[A' history-substring-search-up; bindkey '^[[B' history-substring-search-down;" \
+        zsh-users/zsh-history-substring-search \
+    zpm-zsh/ls \
+    OMZP::extract \
+    OMZP::sudo \
+    OMZP::command-not-found \
 
 # Some fzf related plugins
 # https://github.com/junegunn/fzf
 # with fzf-history-search, you can use ctrl+r to search history
 zi wait lucid has'fzf' for \
-  b4b4r07/enhancd \
-  atinit'zicompinit' \
-    Aloxaf/fzf-tab \
-  joshskidmore/zsh-fzf-history-search \
+    b4b4r07/enhancd \
+    atinit'zicompinit' \
+        Aloxaf/fzf-tab \
+    joshskidmore/zsh-fzf-history-search \
 
 # Some special plugins
 # Auto change node version base on .nvmrc file
 # https://github.com/lukechilds/zsh-nvm
 export NVM_AUTO_USE=true
 zi wait lucid has'pnpm' for \
-  lukechilds/zsh-nvm \
+    lukechilds/zsh-nvm \
 
 # Oh My Tmux
 export MANAGER_OMT_DIR_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/oh-my-tmux"
 export MANAGER_OMT_CONF_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/tmux.conf"
 export MANAGER_OMT_LOCAL_CONF_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/tmux.conf.local"
 zi wait lucid for \
-  has'tmux' atload'omt install -s' \
-    Hzbeta/omt-manager \
+    has'tmux' atload'omt install -s' \
+        Hzbeta/omt-manager \
 
 # Completions
 # Should run 'zicompinit; zicdreplay' after the last completion is loaded
 
 # As completion
 zi wait lucid blockf as'completion' for \
-  mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
-    https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
-  atload'zicompinit; zicdreplay' \
-    zsh-users/zsh-completions \
+    mv'chezmoi.zsh -> _chezmoi' has'chezmoi' \
+        https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
+    atload'zicompinit; zicdreplay' \
+        zsh-users/zsh-completions \
 
 zi wait lucid blockf for \
-  has'pnpm' atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone" \
-    g-plane/pnpm-shell-completion
+    has'pnpm' atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone" \
+        g-plane/pnpm-shell-completion
 
 debug_log "zi plugins loaded"
 # <<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -126,7 +126,7 @@ source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/key-binding.zsh"
 # Misc settings
 # for enhancd
 if command -v fzf &> /dev/null && command -v lsd &> /dev/null; then
-  export ENHANCD_FILTER="fzf --preview 'lsd --tree --depth 1 --icon=always --color=always --group-dirs first --header {}' --preview-window right,40% --height 50% --reverse"
+    export ENHANCD_FILTER="fzf --preview 'lsd --tree --depth 1 --icon=always --color=always --group-dirs first --header {}' --preview-window right,40% --height 50% --reverse"
 fi
 # for fzf
 export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'

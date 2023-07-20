@@ -31,10 +31,10 @@ fi
 if command -v joshuto >/dev/null 2>&1; then
     jo() {
         joshuto --output-file /tmp/joshutodir
-        if [ $? -eq 101 ] && [ -f /tmp/joshutodir ]; then 
+        if [[ $? -eq 101 ]] && [[ -f /tmp/joshutodir ]]; then 
         LASTDIR=`cat /tmp/joshutodir`
         rm -f /tmp/joshutodir 2>/dev/null
-        if [ -d "$LASTDIR" ]; then 
+        if [[ -d "$LASTDIR" ]]; then 
             cd "$LASTDIR"
         fi
         unset LASTDIR

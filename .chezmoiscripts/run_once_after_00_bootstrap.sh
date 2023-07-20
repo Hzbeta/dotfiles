@@ -38,7 +38,7 @@ while $is_need_confirm; do
         # get module name by removing the number prefix and file extension
         module_name="$(echo "$module" | sed 's/^[0-9_]*\([^\.]*\)\..*$/\1/')"
         if ! "check_is_${module_name}_installed"; then
-            if [ "$CM_INSTALL_MODULE" = "all" ] || [ "$CM_INSTALL_MODULE" = "test" ]; then
+            if [[ "$CM_INSTALL_MODULE" == "all" ]] || [[ "$CM_INSTALL_MODULE" == "test" ]]; then
                 need_install_modules+=("${module_name}")
             else
                 if confirm "$(log info "install ${module_name}?")"; then
@@ -49,10 +49,10 @@ while $is_need_confirm; do
     done
 
     # do a final check
-    if [ -z "${need_install_modules[*]}" ]; then
+    if [[ -z "${need_install_modules[*]}" ]]; then
         is_need_confirm=false
     else
-        if [ "$CM_INSTALL_MODULE" = "all" ] || [ "$CM_INSTALL_MODULE" = "test" ]; then
+        if [[ "$CM_INSTALL_MODULE" == "all" ]] || [[ "$CM_INSTALL_MODULE" == "test" ]]; then
             is_need_confirm=false
         else
             log info "the following will be installed:"
@@ -69,11 +69,11 @@ while $is_need_confirm; do
 
 done
 
-if [ -z "${need_install_modules[*]}" ]; then
+if [[ -z "${need_install_modules[*]}" ]]; then
     exit 0
 fi
 
-if [ "$CM_INSTALL_MODULE" = "test" ]; then
+if [[ "$CM_INSTALL_MODULE" == "test" ]]; then
     log error "the following module installation failed!"
     log error "${need_install_modules[@]}"
     exit 1
