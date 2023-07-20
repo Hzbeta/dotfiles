@@ -17,8 +17,7 @@ function install_zsh() {
     fi
 
     # activate zsh config
-    export ZSH_AUTO_TMUX=false
-    if ! zsh -c "source ~/.zshrc"; then
+    if ! zsh -c "export ZSH_PROFILE_DEBUG=true && . ~/.zshenv && . ~/.zshrc"; then
         log error "activate zsh config failed"
         return 1
     fi

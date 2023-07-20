@@ -14,7 +14,11 @@ done < <(find "$installer_dir/"*.sh -print0 | xargs -0 -n1 basename)
 
 # or we can specify the modules list
 # cm_user_modules=(
-#     zsh
+#     00_nix.sh
+#     01_misc-tools.sh
+#     02_miniconda3.sh
+#     03_pnpm.sh
+#     99_zsh.sh
 # )
 
 unset installer_dir
