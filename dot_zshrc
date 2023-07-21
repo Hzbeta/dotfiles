@@ -63,7 +63,7 @@ zi for \
 zi for \
     OMZL::history.zsh \
 
-zi snippet "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/plugin/ls.plugin.zsh"
+zi snippet "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/plugins/ls.plugin.zsh"
 
 # Some lazy load plugins
 zi wait lucid for \
