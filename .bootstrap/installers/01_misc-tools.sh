@@ -5,15 +5,16 @@
 # if the tool command is different from the package name
 # we use `tool,package` to specify the package name
 tools_info_list=(
-    'shellcheck'                  # ShellCheck, a static analysis tool for shell scripts.                         https://github.com/koalaman/shellcheck
-    'tmux'                        # tmux is a terminal multiplexer for Unix-like operating systems.               https://github.com/tmux/tmux
-    'fzf'                         # fzf is a general-purpose command-line fuzzy finder.                           https://github.com/junegunn/fzf
-    'lsd'                         # lsd is a modern replacement for ls.                                           https://github.com/lsd-rs/lsd
-    'fd'                          # fd is a simple, fast and user-friendly alternative to 'find'.                 https://github.com/sharkdp/fd
-    'joshuto'                     # joshuto is a minimalistic file manager in rust.                               https://github.com/kamiyaa/joshuto
-    'act'                         # act allows you to run your GitHub Actions locally.                            https://github.com/nektos/act
-    'dust,du-dust'                # dust is a more intuitive version of du in rust.                               https://github.com/bootandy/dust
-    'duf'                         # duf is a Disk Usage/Free Utility - a better 'df' alternative.                 https://github.com/muesli/duf
+    'shellcheck'       # ShellCheck, a static analysis tool for shell scripts.               https://github.com/koalaman/shellcheck
+    'tmux'             # tmux is a terminal multiplexer for Unix-like operating systems.     https://github.com/tmux/tmux
+    'fzf'              # fzf is a general-purpose command-line fuzzy finder.                 https://github.com/junegunn/fzf
+    'lsd'              # lsd is a modern replacement for ls.                                 https://github.com/lsd-rs/lsd
+    'fd'               # fd is a simple, fast and user-friendly alternative to 'find'.       https://github.com/sharkdp/fd
+    'joshuto'          # joshuto is a minimalistic file manager in rust.                     https://github.com/kamiyaa/joshuto
+    'act'              # act allows you to run your GitHub Actions locally.                  https://github.com/nektos/act
+    'dust,du-dust'     # dust is a more intuitive version of du in rust.                     https://github.com/bootandy/dust
+    'duf'              # duf is a Disk Usage/Free Utility - a better 'df' alternative.       https://github.com/muesli/duf
+    'btop'             # btop is a resource monitor - a better 'top' alternative.            https://github.com/aristocratos/btop
 )    
 
 
