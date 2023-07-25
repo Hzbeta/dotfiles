@@ -113,6 +113,8 @@ zi wait lucid blockf for \
 zi wait lucid blockf as'completion' for \
     has'chezmoi' mv'chezmoi.zsh -> _chezmoi' \
         https://github.com/twpayne/chezmoi/blob/master/completions/chezmoi.zsh \
+    has'conda' \
+        conda-incubator/conda-zsh-completion \
     atload'zicompinit; zicdreplay' \
         zsh-users/zsh-completions \
 # <<<<<<<<<<<<<<<<<<<<<<<<<<
