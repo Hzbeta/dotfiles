@@ -35,6 +35,13 @@ function install_nix() {
         log error "install nix failed"
         return 1
     fi
+
     # shellcheck source=/dev/null
-    source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+    if [[ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]]; then
+        # for multi-user mode
+        source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    elif [[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+        # for single-user mode
+        source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+    fi
 }

@@ -1,3 +1,12 @@
+# for debug
+function debug_log() {
+    [[ "${ZSH_PROFILE_DEBUG:-false}" == "true" ]] && echo -e "\033[32m[Info]\033[0m $1"
+}
+
+function is_zsh_profile_debug() {
+    [[ "${ZSH_PROFILE_DEBUG:-false}" == "true" ]]
+}
+
 # distro
 function get_linux_distro() {
     if [[ -f /etc/os-release ]]; then
@@ -55,3 +64,15 @@ function get_distro_icon() {
         return 1
     fi
 }
+
+# add completions to FPATH
+function add_completions_to_fpath() {
+    local completions_path="$1"
+    
+    if [[ -d "$completions_path" && ":$FPATH:" != *":$completions_path:"* ]]; then
+        FPATH="$completions_path:${FPATH}"
+        debug_log "completions added to FPATH from $completions_path"
+    fi
+}
+
+debug_log "source utils.zsh"

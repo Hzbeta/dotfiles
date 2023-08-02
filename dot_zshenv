@@ -1,20 +1,13 @@
-# for profile debug
-function debug_log() {
-    [[ "${ZSH_PROFILE_DEBUG:-false}" == "true" ]] && echo -e "\033[32m[Info]\033[0m $1"
-}
-
-function is_zsh_profile_debug() {
-    [[ "${ZSH_PROFILE_DEBUG:-false}" == "true" ]]
-}
+# custom env
+export XDG_CONFIG_HOME="$HOME/.config"
+# shellcheck source=/dev/null
+source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/utils.zsh"
 
 debug_log ".zshenv begin..."
 
 # Skip the not really helping Ubuntu global compinit
 # shellcheck disable=SC2034
 skip_global_compinit=1
-
-# custom env
-export XDG_CONFIG_HOME="$HOME/.config"
 
 # conda
 if [[ -d "$HOME/miniconda3" ]]; then
@@ -45,23 +38,22 @@ fi
 if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
     debug_log "homebrew init..."
     eval "$("/home/linuxbrew/.linuxbrew/bin/brew" shellenv)"
-    # add homebrew completions to FPATH
-    if [[ ":$FPATH:" != *"$(brew --prefix)/share/zsh/site-functions"* ]]; then
-        FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-        debug_log "homebrew completions added to FPATH"
-    fi
+    add_completions_to_fpath "$(brew --prefix)/share/zsh/site-functions"
 fi
 
 # nix
-if [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
-    debug_log "nix init..."
-    # shellcheck source=/dev/null
+debug_log "nix init..."
+# shellcheck source=/dev/null
+if [[ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]]; then
+    # for multi-user mode
+    source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    # we need to add two paths to FPATH
+    add_completions_to_fpath "/nix/var/nix/profiles/default/share/zsh/site-functions"
+    add_completions_to_fpath "$HOME/.nix-profile/share/zsh/site-functions"
+elif [[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+    # for single-user mode
     source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-    # add nix completions to FPATH
-    if [[ ":$FPATH:" != *":$HOME/.nix-profile/share/zsh/site-functions:"* ]]; then
-        FPATH="$HOME/.nix-profile/share/zsh/site-functions:${FPATH}"
-        debug_log "nix completions added to FPATH"
-    fi
+    add_completions_to_fpath "$HOME/.nix-profile/share/zsh/site-functions"
 fi
 
 # editor preference neovim > vim > nano > vi
@@ -83,4 +75,5 @@ if ! command -v nvm &>/dev/null; then
     [[ -d "$NVM_DIR" ]] && export NVM_DIR && [[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
 fi
 
+unfunction add_completions_to_fpath
 debug_log ".zshenv end!"

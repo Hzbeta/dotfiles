@@ -2,10 +2,6 @@
 
 debug_log ".zshrc begin..."
 
-# Custom alias and functions
-debug_log "source utils.zsh"
-source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/utils.zsh"
-
 # lanuch tmux if it is not running
 if ! is_zsh_profile_debug && [[ "${ZSH_AUTO_TMUX:-true}" != "false" ]] && command -v tmux &> /dev/null && [[ -z $TMUX ]]; then
     if [[ ! "$TERM_PROGRAM" == "vscode" ]]; then
