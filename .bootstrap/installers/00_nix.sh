@@ -12,7 +12,7 @@ function check_is_nix_installed() {
 # install
 function install_nix() {
 
-    local install_cmd
+    local install_cmd nix_install_mode
     install_cmd=$(get_package_manager "install")
 
     if ! $install_cmd coreutils tar xz-utils; then
@@ -20,7 +20,18 @@ function install_nix() {
         return 1
     fi
 
-    if ! sh <(wget -qO- https://nixos.org/nix/install) --no-daemon --yes --no-modify-profile; then
+    # install nix in multi-user mode if possible
+    # to install nix in multi-user mode, we need
+    # 1. systemd
+    # 2. selinux disabled
+    if ( ! command -v getenforce || getenforce | grep -qi "disabled" ) && \
+        command -v systemctl &> /dev/null && [[ -e /run/systemd/system ]]; then
+        nix_install_mode="--daemon"
+    else
+        nix_install_mode="--no-daemon"
+    fi
+
+    if ! sh <(wget -qO- https://nixos.org/nix/install) $nix_install_mode --yes --no-modify-profile; then
         log error "install nix failed"
         return 1
     fi
