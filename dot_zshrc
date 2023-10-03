@@ -55,7 +55,7 @@ zi for \
         @romkatv  # for p10k
 
 # Plugins need to load immediately
-# if OMZL::history.zsh are lazy loaded,         the history will show incomplete
+# if OMZL::history.zsh are lazy loaded, the history will show incomplete
 zi for \
     OMZL::history.zsh \
 
@@ -125,12 +125,18 @@ debug_log "source user-func.zsh"
 source "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/user-func.zsh"
 
 # Misc settings
+
 # for enhancd
 if command -v fzf &> /dev/null && command -v lsd &> /dev/null; then
     export ENHANCD_FILTER="fzf --preview 'lsd --tree --depth 1 --icon=always --color=always --group-dirs first --header {}' --preview-window right,40% --height 50% --reverse"
 fi
+
 # for fzf
 export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
+
+# report the current working directory to the terminal with `OSC 1337`
+# see https://github.com/Eugeny/tabby/wiki/Shell-working-directory-reporting for more info
+precmd () { echo -n "\x1b]1337;CurrentDir=$(pwd)\x07" }
 
 debug_log ".zshrc end!"
 
