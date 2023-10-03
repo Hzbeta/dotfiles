@@ -85,7 +85,7 @@ update_cmd=$(get_package_manager "update")
 $update_cmd
 # Install required packages
 install_cmd=$(get_package_manager "install")
-$install_cmd wget
+$install_cmd wget git
 
 
 # install modules
