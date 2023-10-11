@@ -15,6 +15,7 @@ tools_info_list=(
     'dust,du-dust'     # dust is a more intuitive version of du in rust.                     https://github.com/bootandy/dust
     'duf'              # duf is a Disk Usage/Free Utility - a better 'df' alternative.       https://github.com/muesli/duf
     'btop'             # btop is a resource monitor - a better 'top' alternative.            https://github.com/aristocratos/btop
+    'bat'              # bat is a 'cat' clone with syntax highlighting and Git integration.  https://github.com/sharkdp/bat
 )    
 
 
